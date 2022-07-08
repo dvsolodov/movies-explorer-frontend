@@ -1,34 +1,37 @@
-import logo from '../../logo.svg';
+import { useState } from 'react';
 import './App.css';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Main from '../Main/Main';
+import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
+import Profile from '../Profile/Profile';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
+import NotFound from '../NotFound/NotFound';
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
   return (
     <div className="page">
-      <Switch>
-        <Route path="/movies">
-        </Route>
+      <Routes>
 
-        <Route path="/saved-movies">
-        </Route>
+        <Route path="/" element={<Main />} />
 
-        <Route path="/profile">
-        </Route>
+        <Route path="/movies" element={<Movies />} />
 
-        <Route path="/signin">
-        </Route>
+        <Route path="/saved-movies" element={<SavedMovies />} />
 
-        <Route path="/signup">
-        </Route>
+        <Route path="/profile" element={<Profile />} />
 
-        <Route path="/signout">
-          <Redirect to="/signin" />
-        </Route>
+        <Route path="/signin" element={<Login />} />
 
-        <Route>
-          { loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" /> }
-        </Route>
+        <Route path="/signup" element={<Register />} />
 
-      </Switch>
+        <Route path="*" element={<NotFound />} />
+
+      </Routes>
+
     </div>
   );
 }
