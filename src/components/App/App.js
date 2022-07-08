@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import './App.css';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -10,8 +9,6 @@ import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-
   return (
     <div className="page">
       <Routes>
