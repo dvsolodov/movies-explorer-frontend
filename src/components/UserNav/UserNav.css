@@ -1,0 +1,39 @@
+.user-nav {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  list-style: none;
+}
+
+.user-nav__item {
+  margin: 0 0 0 30px;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.user-nav__link {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 32px;
+  text-align: center;
+  color: #fff;
+}
+
+.user-nav__link_enter {
+  width: 76px;
+  height: 32px;
+  background: #3DDC84;
+  border-radius: 3px;
+  color: #000;
+}
