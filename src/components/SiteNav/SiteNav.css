@@ -1,0 +1,35 @@
+.site-nav {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  list-style: none;
+}
+
+.site-nav__item {
+  margin: 0 16px 0 0 ;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.site-nav__link {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 32px;
+  text-align: center;
+  color: #fff;
+}
+
+.site-nav__link_active {
+  font-weight: 500;
+}
