@@ -1,9 +1,14 @@
-function Movies() {
+import './Movies.css';
+import SearchForm from '../SearchForm/SearchForm';
+import Preloader from '../Preloader/Preloader';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+
+export default function Movies() {
   return (
-    <section className="movies">
-      <h1>Фильмы</h1>
-    </section>
+    <main className="movies">
+      <SearchForm />
+      <Preloader/>
+      <MoviesCardList />
+    </main>
   );
 }
-
-export default Movies;
