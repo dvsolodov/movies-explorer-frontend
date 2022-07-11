@@ -15,7 +15,7 @@ export default function UserNav() {
         </Link>
       </li>
       <li className="user-nav__item">
-        <Link className="user-nav__link" to="/profile">
+        <Link className="user-nav__link user-nav__link_account" to="/profile">
           Аккаунт
         </Link>
       </li>

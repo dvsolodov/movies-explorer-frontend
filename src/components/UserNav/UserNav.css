@@ -28,6 +28,12 @@
   line-height: 32px;
   text-align: center;
   color: #fff;
+  opacity: 1;
+}
+
+.user-nav__link:hover {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
 }
 
 .user-nav__link_enter {
@@ -36,4 +42,16 @@
   background: #3DDC84;
   border-radius: 3px;
   color: #000;
+}
+
+.user-nav__link_account:after {
+  display: inline-block;
+  margin: 0 0 0 7px;
+  padding: 0 0 0 0;
+  width: 26px;
+  height: auto;
+  line-height: 27px;
+  content: url(../../images/user-nav__account.svg);
+  background: #313131;
+  border-radius: 50px;
 }
