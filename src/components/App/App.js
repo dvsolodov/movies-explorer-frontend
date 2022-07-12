@@ -1,4 +1,5 @@
 import './App.css';
+import { useLocation } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -11,9 +12,20 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 function App() {
+  const location = useLocation();
+  const locPath = location.pathname;
+  const pageWithHeader = [
+    "/", "/movies", "/saved-movies", "/profile",
+  ];
+  const pageWithFooter = [
+    "/", "/movies", "/saved-movies",
+  ];
+
   return (
     <div className="app">
-      <Header />
+      { pageWithHeader.includes(locPath) &&
+        <Header />
+      }
 
       <Routes>
         <Route path="/" element={<Main />} />
@@ -25,7 +37,9 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      <Footer />
+      { pageWithFooter.includes(locPath) &&
+        <Footer />
+      }
     </div>
   );
 }
