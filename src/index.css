@@ -6,5 +6,8 @@
 }
 
 #root {
+  display: grid;
+  grid-template-rows: 1fr;
+  min-height: 100vh;
   background: #202020;
 }
