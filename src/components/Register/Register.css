@@ -1,0 +1,47 @@
+.register {
+  margin: 0 auto;
+  padding: 70px 0;
+  width: 396px;
+  height: auto;
+}
+
+.register__hello {
+  margin: 40px 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #fff;
+}
+
+.register__form {
+  margin: 0;
+  padding: 0 0 16px 0;
+  width: 100%;
+  height: auto;
+}
+
+.register__is-account {
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #8b8b8b;
+}
+
+.register__is-account_text-enter {
+  text-decoration: none;
+  color: #4285f4;
+  opacity: 1;
+}
+
+.register__is-account_text-enter:hover {
+  opacity: 0.7;
+  transition: opacity 0.3s linear;
+}
