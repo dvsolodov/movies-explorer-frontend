@@ -5,12 +5,12 @@ export default function UserNav() {
   return (
     <ul className="user-nav">
       <li className="user-nav__item">
-        <Link className="user-nav__link" to="/register">
+        <Link className="user-nav__link" to="/signup">
           Регистрация
         </Link>
       </li>
       <li className="user-nav__item">
-        <Link className="user-nav__link user-nav__link_enter" to="/login">
+        <Link className="user-nav__link user-nav__link_enter" to="/signin">
           Войти
         </Link>
       </li>
