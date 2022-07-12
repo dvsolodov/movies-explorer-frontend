@@ -1,9 +1,15 @@
-function SaveMovies() {
+import './SavedMovies.css';
+import SearchForm from '../SearchForm/SearchForm';
+import Preloader from '../Preloader/Preloader';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+
+export default function SavedMovies() {
   return (
-    <section className="movies">
-      <h1>Сохраненные фильмы</h1>
-    </section>
+    <main className="saved-movies">
+      <SearchForm />
+      <Preloader/>
+      <MoviesCardList />
+    </main>
   );
 }
 
-export default SaveMovies;
