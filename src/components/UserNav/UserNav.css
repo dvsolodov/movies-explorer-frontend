@@ -39,7 +39,7 @@
 .user-nav__link_enter {
   width: 76px;
   height: 32px;
-  background: #3DDC84;
+  background: #3ddc84;
   border-radius: 3px;
   color: #000;
 }
@@ -54,4 +54,33 @@
   content: url(../../images/user-nav__account.svg);
   background: #313131;
   border-radius: 50px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1279px) {
+  .user-nav__item_account {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .user-nav__item {
+    margin: 0 0 0 14px;
+  }
+
+  .user-nav__item_account {
+    display: none;
+  }
+
+  .user-nav__link {
+    font-size: 10px;
+    line-height: 16px;
+  }
+
+  .user-nav__link_enter {
+    width: 54px;
+    height: 26px;
+    line-height: 26px;
+    vertical-align: middle;
+  }
+
 }
