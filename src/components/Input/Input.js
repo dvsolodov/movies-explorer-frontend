@@ -7,7 +7,7 @@ export default function Input ({ inputTitle, inputName, inputValue, inputError, 
       <input className="input__field"
         type={inputType}
         name={inputName}
-        value={inputValue}
+        defaultValue={inputValue}
       />
       <p className="input__error">{inputError}</p>
     </label>
