@@ -8,3 +8,9 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
+
+@media screen and (max-width: 1280px){
+  .app {
+    width: 100%;
+  }
+}
