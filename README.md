@@ -77,3 +77,5 @@ https://www.figma.com/file/Hykofev18S08clVET0HJMV/Diploma-(Copy)?node-id=891%3A3
 ## Домен
 
 https://solodov-dplm.students.nomoredomains.xyz/
+
+Для лендинга использована технология flex, для остальных - grid
