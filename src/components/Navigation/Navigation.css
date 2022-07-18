@@ -4,13 +4,26 @@
   width: auto;
   height: auto;
   display: flex;
-  justify-content: space-between;
   flex: 1;
 }
 
-  .navigation__hamburger-btn {
-    display: none;
-  }
+.navigation__wrap_site-nav {
+  margin: auto auto auto 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.navigation__wrap_user-nav {
+  margin: auto 0 auto auto;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.navigation__hamburger-btn {
+  display: none;
+}
 
 @media screen and (min-width: 320px) and (max-width: 1279px) {
   .navigation {

@@ -1,14 +1,17 @@
 import './Navigation.css';
+import { useLocation } from 'react-router-dom';
 import hamburger from '../../images/navigation__hamburger.svg'
 import SiteNav from '../SiteNav/SiteNav';
 import UserNav from '../UserNav/UserNav';
 
 export default function Navigation({ onNavPopup }) {
-  const user = true;
+  const location = useLocation();
+  const locPath = location.pathname;
+  const user = false;
 
   return (
     <nav className="navigation">
-      { user &&
+      { locPath !== '/' &&
         <div className="navigation__wrap_site-nav">
           <SiteNav />
         </div>
@@ -18,7 +21,7 @@ export default function Navigation({ onNavPopup }) {
         <UserNav isUser={user} />
       </div>
 
-      { user &&
+      { locPath !== '/' &&
         <button className="navigation__hamburger-btn" onClick={onNavPopup}>
           <img className="navigation__hamburger-img"
             src={ hamburger }
