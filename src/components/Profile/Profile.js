@@ -16,7 +16,7 @@ export default function Profile() {
   return (
     <section className="profile">
       <form className="profile__form">
-        <h2 className="profile__hello">Привет, Денис!</h2>
+        <h2 className="profile__hello">Привет, Виталий!</h2>
         <label className="profile__field">
           <p className="profile__field-title">Имя</p>
           <input className="profile__field-data" value={userName} onChange={handleNameInputChange} />

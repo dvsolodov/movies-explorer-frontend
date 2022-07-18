@@ -1,7 +1,14 @@
 .profile {
   margin: 0 auto;
-  padding: 74px 0 0 0;
+  padding: 236px 0 0 0;
   width: 410px;
+  height: auto;
+}
+
+.profile__form {
+  margin: 0;
+  padding: 0;
+  width: 100%;
   height: auto;
 }
 
@@ -51,7 +58,7 @@
   width: 100%;
   height: auto;
   text-align: right;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 11px;
   line-height: 13px;
   color: #fff;
@@ -92,4 +99,38 @@
 .profile__action_color_red {
   padding: 16px 0 0 0;
   color: #ee3465;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1279px) {
+  .profile__hello {
+    margin: 0 0 96px 0;
+  }
+
+  .profile__field:last-of-type {
+    margin: 0 0 210px 0;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .profile {
+    padding: 70px 0 0 0;
+    width: 260px;
+  }
+
+  .profile__hello {
+    margin: 0 0 80px 0;
+  }
+
+  .profile__field:last-of-type {
+    margin: 0 0 379px 0;
+  }
+
+  .profile__action {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .profile__action_color_red {
+    margin: 0 auto 40px auto;
+  }
 }
