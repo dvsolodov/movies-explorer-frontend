@@ -35,7 +35,12 @@
   border-bottom: 1px solid #424242;
 }
 
+.portfolio__project:first-child {
+  padding: 0 0 19px 0;
+}
+
 .portfolio__project:last-child {
+  padding: 20px 0 0 0;
   border-bottom: none;
 }
 
@@ -64,8 +69,37 @@
 .portfolio__arrow {
   margin: 0;
   padding: 0;
-  width: auto;
+  width: 29px;
   height: auto;
   object-position: center center;
   object-fit: contain;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1279px) {
+  .portfolio__title {
+    color: #a0a0a0;
+  }
+
+  .portfolio__project-link {
+    font-size: 28px;
+  }
+
+  .portfolio__arrow {
+    width: 27px;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .portfolio__title {
+    margin: 0 0 40px 0;
+    font-size: 14px;
+  }
+
+  .portfolio__project-link {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .portfolio__arrow {
+    width: 18px;
+  }
 }
