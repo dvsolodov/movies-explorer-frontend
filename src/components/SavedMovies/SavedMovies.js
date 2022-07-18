@@ -7,8 +7,8 @@ export default function SavedMovies() {
   return (
     <main className="saved-movies">
       <SearchForm />
-      <Preloader/>
       <MoviesCardList />
+      <Preloader/>
     </main>
   );
 }
