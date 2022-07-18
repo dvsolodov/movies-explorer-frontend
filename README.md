@@ -73,3 +73,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ## Ссылка на figma-макет
 
 https://www.figma.com/file/Hykofev18S08clVET0HJMV/Diploma-(Copy)?node-id=891%3A3857
+
+## Домен
+
+https://solodov-dplm.students.nomoredomains.xyz/
