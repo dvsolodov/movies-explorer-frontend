@@ -17,7 +17,7 @@
 }
 
 .not-found__title {
-  margin: 0;
+  margin: 0 0 5px 0;
   padding: 0;
   width: 100%;
   height: auto;
@@ -55,3 +55,16 @@
   cursor:pointer;
 }
 
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .not-found__title {
+    margin: 0 0 10px 0;
+    font-size: 88px;
+    line-height: 97px;
+  }
+
+  .not-found__under-title {
+    margin: 0 0 284px 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
