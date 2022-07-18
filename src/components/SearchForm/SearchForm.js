@@ -7,15 +7,17 @@ export default function SearchForm() {
   return (
     <section className="search-form">
       <form className="search-form__form">
-        <img className="search-form__loupe-img"
-          src={loupe}
-          alt="Увеличительное стекло"
-        ></img>
-        <input className="search-form__input"
-          type="text"
-          placeholder="Фильм"
-        ></input>
-        <button className="search-form__submit" type="submit"></button>
+        <div className="search-form__form-wrap">
+          <img className="search-form__loupe-img"
+            src={loupe}
+            alt="Увеличительное стекло"
+          ></img>
+          <input className="search-form__input"
+            type="text"
+            placeholder="Фильм"
+          ></input>
+          <button className="search-form__submit" type="submit"></button>
+        </div>
         <FilterCheckbox />
       </form>
     </section>
