@@ -1,4 +1,5 @@
 import './App.css';
+import { useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 import Main from '../Main/Main';
@@ -9,6 +10,7 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
 import Header from '../Header/Header';
+import NavPopup from '../NavPopup/NavPopup';
 import Footer from '../Footer/Footer';
 
 function App() {
@@ -21,10 +23,20 @@ function App() {
     "/", "/movies", "/saved-movies",
   ];
 
+  const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
+
+  function handleNavPopupClick() {
+    setIsNavPopupOpen(true);
+  }
+
+  function closePopup() {
+    setIsNavPopupOpen(false);
+  }
+
   return (
     <div className="app">
       { pageWithHeader.includes(locPath) &&
-        <Header />
+        <Header onNavPopup={handleNavPopupClick} />
       }
 
       <Routes>
@@ -40,6 +52,9 @@ function App() {
       { pageWithFooter.includes(locPath) &&
         <Footer />
       }
+
+      <NavPopup isOpen={isNavPopupOpen} onClose={closePopup} />
+
     </div>
   );
 }
