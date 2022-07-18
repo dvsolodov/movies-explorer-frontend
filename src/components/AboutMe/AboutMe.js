@@ -11,9 +11,9 @@ export default function AboutMe() {
       <h2 className="about-me__title">Студент</h2>
       <article className="about-me__article">
         <div className="about-me__article-wrap">
-          <h3 className="about-me__name">Денис</h3>
+          <h3 className="about-me__name">Виталий</h3>
           <p className="about-me__info">
-            Фронтенд-разработчик, 43 лет
+            Фронтенд-разработчик, 30 лет
           </p>
           <p className="about-me__description">
             Я родился и живу в Саратове, закончил факультет экономики СГУ. У меня есть жена
