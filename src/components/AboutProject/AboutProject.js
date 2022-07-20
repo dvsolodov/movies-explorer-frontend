@@ -23,7 +23,7 @@ export default function AboutProject() {
         </li>
       </ul>
       <div className="about-project__timeline">
-        <div className="about-project__timeline-span">
+        <div className="about-project__timeline-span about-project__timeline-span_left">
           <h3 className="about-project__timeline-span-title about-project__timeline-span-title_bg_green">
             1 неделя
           </h3>
