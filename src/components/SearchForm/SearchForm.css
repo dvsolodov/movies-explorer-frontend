@@ -42,7 +42,7 @@
 }
 
 .search-form__input {
-  margin: 0;
+  margin: 0 10px 0 0;
   padding: 0;
   width: auto;
   height: auto;
@@ -52,7 +52,10 @@
   color: #8b8b8b;
   background-color: transparent;
   border: none;
-  outline: none;
+}
+
+.search-form__input:focus {
+  outline: 2px solid #3DDC84;
 }
 
 .search-form__submit {
@@ -65,6 +68,10 @@
   border: none;
   cursor: pointer;
   opacity: 1;
+}
+
+.search-form__submit:focus {
+  outline: 2px solid #3DDC84;
 }
 
 .search-form__submit:hover {
@@ -120,4 +127,9 @@
   .search-form__input {
     width: 100%;
   }
+
+  .search-form__submit {
+    margin: 0 0 0 10px;
+  }
 }
+

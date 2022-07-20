@@ -1,5 +1,4 @@
 import './SearchForm.css';
-import btnImg from '../../images/search-film__submit-btn-img.svg';
 import loupe from '../../images/search-film__loupe-img.svg';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
