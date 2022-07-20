@@ -36,10 +36,12 @@ export default function MoviesCard({ img, title, duration }) {
       ></img>
       <div className="movies-card__wrap">
         <h2 className="movies-card__title">{title}</h2>
-        <img className={dlt ? del_class: like_class}
-          src={like}
-          alt={alt}
-        ></img>
+        <button className="movies-card__button">
+          <img className={dlt ? del_class: like_class}
+            src={like}
+            alt={alt}
+          ></img>
+        </button>
       </div>
       <p className="movies-card__duration">{duration}</p>
     </section>

@@ -41,13 +41,23 @@
   color: #fff;
 }
 
+.movies-card__button {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  justify-self: end;
+}
+
 .movies-card__like,
 .movies-card__del {
   margin: 0;
   padding: 0;
   width: auto;
   height: auto;
-  justify-self: end;
   opacity: 1;
 }
 .movies-card__del {
