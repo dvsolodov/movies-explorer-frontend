@@ -34,10 +34,6 @@
     display: none;
   }
 
-  .navigation__wrap_user-nav {
-    display: none;
-  }
-
   .navigation__hamburger-btn {
     display: block;
     margin: 0;
