@@ -115,7 +115,7 @@
   height: 327px;
   border-radius: 10px;
   object-position: center center;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 @media screen and (min-width: 768px) and (max-width: 1279px) {
@@ -202,8 +202,9 @@
   }
 
   .about-me__img {
-    margin: 0 0 40px 0;
-    width: 100%;
+    margin: 0 auto 40px auto;
+    padding:0;
+    width: 292px;
     order: 1;
   }
 }
