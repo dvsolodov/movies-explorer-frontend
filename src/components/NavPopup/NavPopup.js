@@ -9,8 +9,8 @@ export default function NavPopup({ isOpen, onClose }) {
   return (
     <div className={`nav-popup${!isOpen ? "" : " nav-popup_opened"}`}>
       <div className={`nav-popup__container${!isOpen ? "" : " nav-popup__container_opened"}`}>
-        <SiteNav isUser={isUser} />
-        <UserNav isUser={isUser}/>
+        <SiteNav />
+        <UserNav isUser={isUser} />
         <button className="nav-popup__close-btn" onClick={onClose}>
           <img className="nav-popup__close-icon"
             src={ closeBtnIcon }
