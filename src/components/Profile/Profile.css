@@ -1,0 +1,136 @@
+.profile {
+  margin: 0 auto;
+  padding: 236px 0 0 0;
+  width: 410px;
+  height: auto;
+}
+
+.profile__form {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+}
+
+.profile__hello {
+  margin: 0 0 123px 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  color: #fff;
+}
+
+.profile__field {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  margin: 0;
+  padding: 0 0 16px 0;
+  width: 100%;
+  height: auto;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #fff;
+  border-bottom: 1px solid #424242;
+}
+
+.profile__field:last-of-type {
+  margin: 0 0 220px 0;
+  padding: 17px 0 0 0;
+  border: none;
+}
+
+.profile__field-title {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: auto;
+}
+
+.profile__field-data {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  text-align: right;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.profile__actions {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+}
+
+.profile__action {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  width: auto;
+  height: auto;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #fff;
+  border: none;
+  background-color: transparent;
+  opacity: 1;
+}
+
+.profile__action:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s linear;
+}
+
+.profile__action_color_red {
+  padding: 16px 0 0 0;
+  color: #ee3465;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1279px) {
+  .profile__hello {
+    margin: 0 0 96px 0;
+  }
+
+  .profile__field:last-of-type {
+    margin: 0 0 210px 0;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .profile {
+    padding: 70px 0 0 0;
+    width: 260px;
+  }
+
+  .profile__hello {
+    margin: 0 0 80px 0;
+  }
+
+  .profile__field:last-of-type {
+    margin: 0 0 379px 0;
+  }
+
+  .profile__action {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .profile__action_color_red {
+    margin: 0 auto 40px auto;
+  }
+}

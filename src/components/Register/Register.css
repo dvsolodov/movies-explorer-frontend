@@ -1,0 +1,86 @@
+.register {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.register__wrap {
+  margin: auto;
+  padding: 0;
+  width: 396px;
+  height: auto;
+}
+
+.register__hello {
+  margin: 40px 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #fff;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0 0 16px 0;
+  width: 100%;
+  min-height: 380px;
+}
+
+.register__is-account {
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #8b8b8b;
+}
+
+.register__is-account_text-enter {
+  text-decoration: none;
+  color: #4285f4;
+  opacity: 1;
+}
+
+.register__is-account_text-enter:hover {
+  opacity: 0.7;
+  transition: opacity 0.3s linear;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .register {
+    margin: 0;
+    padding: 56px 30px 30px 30px;
+  }
+
+  .register__wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 0 14px 0;
+    width: 260px;
+    height: auto;
+  }
+
+  .register__hello {
+    text-align: center;
+    margin: 50px 0 80px 0;
+  }
+
+  .register__is-not-account {
+    font-size: 12px;
+    line-height: 15px
+  }
+
+}

@@ -1,0 +1,43 @@
+.input {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+}
+
+.input__title {
+  margin: 10px 0 10px 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #8b8b8b;
+}
+
+.input__field {
+  margin: 0 0 10px 0;
+  padding: 0 15px;
+  width: 100%;
+  height: 46px;
+  background: #2f2f2f;
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  color: #fff;
+  border: none;
+  outline: none;
+}
+
+.input__error {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ee3465;
+}
