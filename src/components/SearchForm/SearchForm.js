@@ -3,18 +3,27 @@ import { useState } from 'react';
 import loupe from '../../images/search-film__loupe-img.svg';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
-export default function SearchForm() {
+export default function SearchForm({getFormData}) {
   const [formError, setFormError] = useState();
 
   function handleSubmit(e) {
     e.preventDefault();
     const searchForm = document.getElementById('searchForm');
     const keyWords = searchForm.keyWords.value;
+    const isShortedFilm = searchForm.shortFilm.checked;
 
-    if (!keyWords.trim()) {
+    if (!isValidatedSearchForm(keyWords)) return;
+
+    getFormData({ keyWords, isShortedFilm });
+  }
+
+  function isValidatedSearchForm(inputValue) {
+    if (!inputValue.trim()) {
       setFormError(true);
+      return false;
     } else {
       setFormError(false);
+      return true;
     }
   }
 
