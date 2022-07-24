@@ -8,34 +8,31 @@ import { moviesApi } from '../../utils/MoviesApi';
 import { useEffect, useState } from 'react';
 
 export default function Movies({ onNavPopup }) {
-  const [formData, setFormData] = useState({});
-  const [movies, setMovies] = useState([]);
+  let [formData, setFormData] = useState();
+  let [movies, setMovies] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
 
   // render the page if there is data in localStorage
-  /*
-  useEffect(() => {
-    console.log(`keyWords ${keyWords}`);
-    console.log(`isShortFilm ${isShortFilm}`);
-    console.log(`movies ${movies}`);
-  }, []);
-  */
-
   useEffect(() => {
     setIsLoaded(false);
-    getAllMovies();
-    console.log(formData);
-    console.log(movies);
-  }, [formData]);
+    const formData = JSON.parse(localStorage.getItem('formDataMovies'));
+    const movies = JSON.parse(localStorage.getItem('movies'));
+    formData ? setFormData(formData) : setFormData({});
+    movies ? setMovies(movies) : setMovies([]);
+    setIsLoaded(true);
+  }, []);
 
   function handleFormData({ keyWords, isShortedFilm }) {
-    setFormData({ keyWords, isShortedFilm });
+    setIsLoaded(false);
+    localStorage.setItem('formDataMovies', JSON.stringify({ keyWords, isShortedFilm }));
+    getAllMovies();
   }
 
   function getAllMovies() {
     moviesApi.getMovies()
       .then((allMovies) => {
         setMovies(allMovies);
+        localStorage.setItem('movies', JSON.stringify(allMovies));
         setIsLoaded(true);
       })
       .catch(err => console.log(err));
@@ -45,7 +42,7 @@ export default function Movies({ onNavPopup }) {
     <>
       <Header onNavPopup={onNavPopup} />
       <main className="movies">
-        <SearchForm getFormData={handleFormData} />
+        <SearchForm getFormData={handleFormData} storageData={formData} />
         { isLoaded && <MoviesCardList movies={movies} /> }
         { !isLoaded && <Preloader/> }
       </main>

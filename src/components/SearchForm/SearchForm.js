@@ -3,7 +3,7 @@ import { useState } from 'react';
 import loupe from '../../images/search-film__loupe-img.svg';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
-export default function SearchForm({getFormData}) {
+export default function SearchForm({ getFormData, storageData }) {
   const [formError, setFormError] = useState();
 
   function handleSubmit(e) {
@@ -39,6 +39,7 @@ export default function SearchForm({getFormData}) {
             type="text"
             placeholder="Фильм"
             name="keyWords"
+            defaultValue={storageData ? storageData.keyWords : ""}
           ></input>
           <p className={`search-form__error${formError ? "" : " search-form__error_invisible"}`}>Нужно ввести ключевое слово</p>
           <button className="search-form__submit" type="submit"></button>
