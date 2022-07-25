@@ -2,30 +2,34 @@ import './MoviesCard.css';
 import { useEffect, useState } from 'react';
 import {  useLocation } from 'react-router-dom';
 import { formatTime } from '../../utils/utils';
-import likeImg1 from '../../images/movies-card__white-like.svg';
-import likeImg2 from '../../images/movies-card__red-like.svg';
-import del from '../../images/saved-movies__delete.svg';
+import whiteLikeImg from '../../images/movies-card__white-like.svg';
+import redLikeImg from '../../images/movies-card__red-like.svg';
+import delImg from '../../images/saved-movies__delete.svg';
 
 export default function MoviesCard({ movie }) {
   const baseUrl = "https://api.nomoreparties.co/";
   const location = useLocation();
-  const [like, setLike] = useState('');
+  const [like, setLike] = useState(whiteLikeImg);
   const [dlt, setDlt] = useState('');
-  const [alt, setAlt] = useState('');
+  const [alt, setAlt] = useState('Добавить в сохраненные');
   const like_class = 'movies-card__like';
   const del_class = 'movies-card__del';
 
-  useEffect(() => {
+  function handleClick() {
     if (location.pathname === "/movies") {
-      setLike(likeImg1);
-      setDlt(false);
-      setAlt('Нравится');
-    } else {
-      setLike(likeImg2);
-      setDlt(true);
-      setAlt('Удалить');
+      if (like === whiteLikeImg) {
+        setLike(redLikeImg);
+        setAlt('Удалить из сохраненных')
+      } else {
+        setLike(whiteLikeImg);
+        setAlt('Добавить в сохраненные')
+      }
     }
-  }, [like, dlt, alt, location.pathname]);
+  }
+
+  function toggleBtnClass() {
+    return dlt ? del_class: like_class;
+  }
 
   return (
     <section className="movies-card">
@@ -37,8 +41,8 @@ export default function MoviesCard({ movie }) {
       </a>
       <div className="movies-card__wrap">
         <h2 className="movies-card__title" title={movie.nameRU}>{movie.nameRU}</h2>
-        <button className="movies-card__button" onClick={}>
-          <img className={dlt ? del_class: like_class}
+        <button className="movies-card__button" title={alt} onClick={handleClick}>
+          <img className={toggleBtnClass()}
             src={like}
             alt={alt}
           ></img>
