@@ -8,41 +8,86 @@ import { moviesApi } from '../../utils/MoviesApi';
 import { useEffect, useState } from 'react';
 
 export default function Movies({ onNavPopup }) {
-  let [formData, setFormData] = useState();
-  let [movies, setMovies] = useState();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [formData, setFormData] = useState(getFormDataFromStorage());
+  const [movies, setMovies] = useState(getMoviesFromStorage());
 
-  // render the page if there is data in localStorage
   useEffect(() => {
-    setIsLoaded(false);
-    const formData = JSON.parse(localStorage.getItem('formDataMovies'));
-    const movies = JSON.parse(localStorage.getItem('movies'));
-    formData ? setFormData(formData) : setFormData({});
-    movies ? setMovies(movies) : setMovies([]);
-    setIsLoaded(true);
-  }, []);
+    setFormDataToStorage(formData);
+  }, [formData]);
 
-  function handleFormData({ keyWords, isShortedFilm }) {
+  useEffect(() => {
+    setMoviesToStorage(movies);
+  }, [movies]);
+
+  function handleSubmit({searchText, isShorted}) {
     setIsLoaded(false);
-    localStorage.setItem('formDataMovies', JSON.stringify({ keyWords, isShortedFilm }));
-    getAllMovies();
+    setFormData({searchText, isShorted});
+    getMovies();
   }
 
-  function getAllMovies() {
+  function getMovies() {
     moviesApi.getMovies()
-      .then((allMovies) => {
-        setMovies(allMovies);
-        localStorage.setItem('movies', JSON.stringify(allMovies));
+      .then((movies) => {
+        let mvs = movies;
+        const searchText = getFormDataFromStorage().searchText;
+
+        if (getFormDataFromStorage().isShorted) {
+          mvs = filterMoviesByTime(movies);
+        }
+
+        setMovies(filterMoviesBySearchText(mvs, searchText));
         setIsLoaded(true);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
+  }
+
+  function filterMoviesByTime(movies) {
+    return movies.filter((movie) => {
+      return movie.duration <= 40;
+    });
+  }
+
+  function filterMoviesBySearchText(movies, searchText) {
+    return movies.filter((movie) => {
+      const str = `${movie.nameRU} ${movie.nameEN} ${movie.description}`;
+      return str.toLowerCase().includes(searchText.toLowerCase());
+    });
+  }
+
+  function setFormDataToStorage(formData) {
+    localStorage.setItem("formDataMovies", JSON.stringify(formData));
+  }
+
+  function setMoviesToStorage(movies) {
+    localStorage.setItem("movies", JSON.stringify(movies));
+  }
+
+  function getFormDataFromStorage() {
+    const data = JSON.parse(localStorage.getItem("formDataMovies"));
+
+    if (data === null) {
+      return {};
+    }
+
+    return data;
+  }
+
+  function getMoviesFromStorage() {
+    const data = JSON.parse(localStorage.getItem("movies"));
+
+    if (data === null) {
+      return [];
+    }
+
+    return data;
   }
 
   return (
     <>
       <Header onNavPopup={onNavPopup} />
       <main className="movies">
-        <SearchForm getFormData={handleFormData} storageData={formData} />
+        <SearchForm onSubmit={handleSubmit} storageData={formData} />
         { isLoaded && <MoviesCardList movies={movies} /> }
         { !isLoaded && <Preloader/> }
       </main>

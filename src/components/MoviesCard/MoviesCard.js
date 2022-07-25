@@ -29,7 +29,7 @@ export default function MoviesCard({ movie }) {
 
   return (
     <section className="movies-card">
-      <a className="movies-card__link" href={movie.trailerLink} target="_blank" title={movie.nameRU}>
+      <a className="movies-card__link" href={movie.trailerLink} target="_blank" rel="noreferrer" title={movie.nameRU}>
         <img className="movies-card__img"
           src={baseUrl + movie.image.url}
           alt={movie.nameRU}
@@ -37,7 +37,7 @@ export default function MoviesCard({ movie }) {
       </a>
       <div className="movies-card__wrap">
         <h2 className="movies-card__title" title={movie.nameRU}>{movie.nameRU}</h2>
-        <button className="movies-card__button">
+        <button className="movies-card__button" onClick={}>
           <img className={dlt ? del_class: like_class}
             src={like}
             alt={alt}
