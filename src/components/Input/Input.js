@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import './Input.css';
 
-export default function Input ({ validationRules, setIsValid, inputTitle, inputName, inputType }) {
+export default function Input ({ validationRules, setIsValid, customErrorMsg, inputTitle, inputName, inputType }) {
   const [inputError, setInputError] = useState("");
 
   function handleChange(e) {
-    const error = e.target.validationMessage;
+    let error = e.target.validationMessage;
+
+    if (customErrorMsg !== "" && error !== "") {
+      error = customErrorMsg;
+    }
+
     setInputError(error);
 
     if (error === "") {
