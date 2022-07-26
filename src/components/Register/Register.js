@@ -4,8 +4,11 @@ import Logo from '../Logo/Logo';
 import Input from '../Input/Input';
 import AuthFormButton from '../AuthFormButton/AuthFormButton';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { mainApi } from '../../utils/MainApi';
 
 export default function Register() {
+  const navigate = useNavigate();
   const [isValidName, setIsValidName] = useState(true);
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
@@ -32,14 +35,31 @@ export default function Register() {
     const passwordEl = elements.password;
 
     if (nameEl.validity.valid && emailEl.validity.valid && passwordEl.validity.valid) {
+      register({
+        name:nameEl.value,
+        email:emailEl.value,
+        password:passwordEl.value
+      });
       setIsValid(true);
       setTotalError("");
-      console.log('Все в порядке');
     } else {
       setIsValid(false);
       setTotalError("Заполните все поля формы");
       console.log('Заполните все поля формы');
     }
+  }
+
+  function register(formData) {
+    mainApi.register(formData)
+    .then((data) => {
+      if (data.message !== undefined) {
+        setTotalError(data.message);
+      } else {
+        localStorage.setItem('token', data.token);
+        navigate("../movies", { replace: true });
+      }
+    })
+    .catch((err) => console.log(err));
   }
 
   return (
@@ -50,10 +70,10 @@ export default function Register() {
         <form className="register__form" name="register" onSubmit={handleSubmit} noValidate>
           <Input
             validationRules={{
-              minLength:"2",
-              maxLength:"30",
+              pattern:"[a-zA-Zа-яА-ЯёЁ_-]{2,30}",
               required:true,
             }}
+            customErrorMsg="2-30 символов латиницы, кириллицы, пробел или дефис"
             setIsValid={setIsValidName}
             inputType="text"
             inputTitle="Имя"
@@ -63,6 +83,7 @@ export default function Register() {
             validationRules={{
               required:true,
             }}
+            customErrorMsg=""
             setIsValid={setIsValidEmail}
             inputType="email"
             inputTitle="E-mail"
@@ -72,6 +93,7 @@ export default function Register() {
             validationRules={{
               required:true,
             }}
+            customErrorMsg=""
             setIsValid={setIsValidPassword}
             inputType="password"
             inputTitle="Пароль"
