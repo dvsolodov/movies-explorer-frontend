@@ -6,12 +6,15 @@ import AuthFormButton from '../AuthFormButton/AuthFormButton';
 import { useEffect, useState } from 'react';
 
 export default function Register() {
-  const [isValidName, setIsValidName] = useState(false);
-  const [isValidEmail, setIsValidEmail] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [isValidName, setIsValidName] = useState(true);
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
   const [isValid, setIsValid] = useState(false);
+  const [totalError, setTotalError] = useState("");
 
   useEffect(() => {
+    setTotalError("");
+
     if (isValidName && isValidEmail && isValidPassword) {
       setIsValid(true);
     } else {
@@ -21,9 +24,20 @@ export default function Register() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (isValid) {
+
+    const form = document.forms.register;
+    const elements = form.elements;
+    const nameEl = elements.name;
+    const emailEl = elements.email;
+    const passwordEl = elements.password;
+
+    if (nameEl.validity.valid && emailEl.validity.valid && passwordEl.validity.valid) {
+      setIsValid(true);
+      setTotalError("");
       console.log('Все в порядке');
     } else {
+      setIsValid(false);
+      setTotalError("Заполните все поля формы");
       console.log('Заполните все поля формы');
     }
   }
@@ -63,6 +77,7 @@ export default function Register() {
             inputTitle="Пароль"
             inputName="password"
           />
+          <p className="register__total-error">{totalError}</p>
           <AuthFormButton buttonTitle="Зарегистрироваться" isDisabled={!isValid} />
         </form>
         <p className="register__is-account">

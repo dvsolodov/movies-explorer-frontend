@@ -9,8 +9,11 @@ export default function Login() {
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [totalError, setTotalError] = useState("");
 
   useEffect(() => {
+    setTotalError("");
+
     if (isValidEmail && isValidPassword) {
       setIsValid(true);
     } else {
@@ -20,9 +23,19 @@ export default function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (isValid) {
+
+    const form = document.forms.login;
+    const elements = form.elements;
+    const emailEl = elements.email;
+    const passwordEl = elements.password;
+
+    if (emailEl.validity.valid && passwordEl.validity.valid) {
+      setIsValid(true);
+      setTotalError("");
       console.log('Все в порядке');
     } else {
+      setIsValid(false);
+      setTotalError("Заполните все поля формы");
       console.log('Заполните все поля формы');
     }
   }
@@ -51,6 +64,7 @@ export default function Login() {
             inputTitle="Пароль"
             inputName="password"
           />
+          <p className="login__total-error">{totalError}</p>
           <AuthFormButton buttonTitle="Войти" isDisabled={!isValid}/>
         </form>
         <p className="login__is-not-account">
