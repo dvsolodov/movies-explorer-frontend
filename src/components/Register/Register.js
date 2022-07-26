@@ -3,66 +3,29 @@ import { Link } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 import Input from '../Input/Input';
 import AuthFormButton from '../AuthFormButton/AuthFormButton';
-import { vldtr } from '../../utils/Validator';
 import { useEffect, useState } from 'react';
 
 export default function Register() {
-  const [nameErr, setNameErr] = useState("");
-  const [emailErr, setEmailErr] = useState("");
-  const [passwordErr, setPasswordErr] = useState("");
-  const [totalErr, setTotalErr] = useState("");
+  const [isValidName, setIsValidName] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
-    if (nameErr !== "" || emailErr !== "" || passwordErr !== "") {
-      setIsValid(false);
-      setTotalErr("");
-    } else {
+    if (isValidName && isValidEmail && isValidPassword) {
       setIsValid(true);
+    } else {
+      setIsValid(false);
     }
-  }, [nameErr, emailErr, passwordErr]);
-
-  /*
-  useEffect(() => {
-    setIsValid(false);
-  }, []);
-  */
-
-  function nameValidator(e) {
-    vldtr.validateName(e.target);
-    setNameErr(vldtr.nameErr);
-  }
-
-  function emailValidator(e) {
-    vldtr.validateEmail(e.target);
-    setEmailErr(vldtr.emailErr);
-  }
-
-  function passwordValidator(e) {
-    vldtr.validatePassword(e.target);
-    setPasswordErr(vldtr.passwordErr);
-  }
+  }, [isValidName, isValidEmail, isValidPassword]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    const formElements = document.forms.register.elements;
-    const nameVal = formElements.name.value.trim();
-    const emailVal = formElements.email.value.trim();
-    const passwordVal = formElements.password.value.trim();
-
-    if (nameVal !== "" && emailVal !== "" && passwordVal !== "") {
-      console.log(nameVal);
-      console.log(emailVal);
-      console.log(passwordVal);
+    if (isValid) {
+      console.log('Все в порядке');
     } else {
-      setTotalErr("Неправильно заполнены поля формы!");
-      setIsValid(false);
+      console.log('Заполните все поля формы');
     }
-
-  }
-
-  function register() {
-
   }
 
   return (
@@ -72,38 +35,34 @@ export default function Register() {
         <h1 className="register__hello">Добро пожаловать!</h1>
         <form className="register__form" name="register" onSubmit={handleSubmit} noValidate>
           <Input
-            validation={{
+            validationRules={{
               minLength:"2",
               maxLength:"30",
               required:true,
             }}
-            validator={nameValidator}
+            setIsValid={setIsValidName}
             inputType="text"
             inputTitle="Имя"
             inputName="name"
-            inputError={nameErr}
             />
           <Input
-            validation={{
+            validationRules={{
               required:true,
             }}
-            validator={emailValidator}
+            setIsValid={setIsValidEmail}
             inputType="email"
             inputTitle="E-mail"
             inputName="email"
-            inputError={emailErr}
           />
           <Input
-            validation={{
+            validationRules={{
               required:true,
             }}
-            validator={passwordValidator}
+            setIsValid={setIsValidPassword}
             inputType="password"
             inputTitle="Пароль"
             inputName="password"
-            inputError={passwordErr}
           />
-          <p className="register__total-error">{totalErr}</p>
           <AuthFormButton buttonTitle="Зарегистрироваться" isDisabled={!isValid} />
         </form>
         <p className="register__is-account">
