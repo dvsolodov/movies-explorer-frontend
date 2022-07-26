@@ -8,12 +8,6 @@ export default function MoviesCardList({ movies }) {
   const [allMovies, setAllMovies] = useState(movies);
   const [moviesCount, setMoviesCount] = useState(4);
 
-  /*
-  useEffect(() => {
-    setAllMovies(allMovies);
-  }, [moviesCount]);
-  */
-
   function handleClick(e) {
     e.preventDefault();
 
@@ -27,8 +21,6 @@ export default function MoviesCardList({ movies }) {
           return <MoviesCard movie={movie} key={movie.id} />
         })}
       </div>
-      {console.log(moviesCount)}
-
       { location.pathname === "/movies" && allMovies.length > 4 && allMovies.length >= moviesCount &&
         <button className="movies-card-list__more-btn" onClick={handleClick}>Ещё</button>
       }
