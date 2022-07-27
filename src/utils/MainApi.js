@@ -20,10 +20,35 @@ class MainApi {
       .then((response) => response.json());
   }
 
-  login() {
+  login(formData) {
+    return fetch(`${this._baseUrl}/signin`, {
+        method: "POST",
+        headers: this._headers,
+        body: JSON.stringify({
+          email:formData.email,
+          password:formData.password
+        })
+      })
+      .then((response) => response.json());
+  }
 
+  getUserData(token) {
+    this._headers["Authorization"] = `Bearer ${token}`;
+    return fetch(`${this._baseUrl}/users/me`, {
+      headers: this._headers
+    })
+      .then((response) => response.json());
+  }
+
+  getMovies(token) {
+    this._headers["Authorization"] = `Bearer ${token}`;
+    return fetch(`${this._baseUrl}/movies`, {
+      headers: this._headers
+    })
+      .then((response) => response.json());
   }
 }
+
 
 const mainApi = new MainApi();
 

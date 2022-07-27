@@ -1,10 +1,16 @@
 import './Profile.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Header from '../Header/Header';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useNavigate } from 'react-router-dom';
 
-export default function Profile({ onNavPopup }) {
-  const [userName, setUserName] = useState('Денис');
-  const [userEmail, setUserEmail] = useState('example@yandex.ru');
+
+export default function Profile({ onNavPopup, setLoggedIn, setCurrentUser }) {
+  const navigate = useNavigate();
+  const currentUser = useContext(CurrentUserContext);
+  const [userName, setUserName] = useState(currentUser.name);
+  const [userEmail, setUserEmail] = useState(currentUser.email);
+
 
   function handleNameInputChange(e) {
     setUserName(e.target.value);
@@ -12,6 +18,13 @@ export default function Profile({ onNavPopup }) {
 
   function handleEmailInputChange(e) {
     setUserEmail(e.target.value);
+  }
+
+  function handleClick() {
+    setLoggedIn(false);
+    setCurrentUser({});
+    localStorage.removeItem('_token');
+    navigate("../signin", { replace: true});
   }
 
   return (
@@ -31,7 +44,7 @@ export default function Profile({ onNavPopup }) {
         </form>
         <div className="profile__actions">
           <button className="profile__action">Редактировать</button>
-          <button className="profile__action profile__action_color_red">Выйти из аккаунта</button>
+          <button className="profile__action profile__action_color_red" onClick={handleClick}>Выйти из аккаунта</button>
         </div>
       </main>
     </>

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mainApi } from '../../utils/MainApi';
 
-export default function Register() {
+export default function Register({ setLoggedIn, setCurrentUser }) {
   const navigate = useNavigate();
   const [isValidName, setIsValidName] = useState(true);
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -55,8 +55,10 @@ export default function Register() {
       if (data.message !== undefined) {
         setTotalError(data.message);
       } else {
-        localStorage.setItem('token', data.token);
-        navigate("../movies", { replace: true });
+        localStorage.setItem('_token', data.token);
+        setLoggedIn(true);
+        setCurrentUser(data.user);
+        navigate("/movies", { replace: true });
       }
     })
     .catch((err) => console.log(err));

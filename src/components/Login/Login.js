@@ -4,8 +4,11 @@ import Logo from '../Logo/Logo';
 import Input from '../Input/Input';
 import AuthFormButton from '../AuthFormButton/AuthFormButton';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { mainApi } from '../../utils/MainApi';
 
-export default function Login() {
+export default function Login({ setLoggedIn, setCurrentUser }) {
+  const navigate = useNavigate();
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isValid, setIsValid] = useState(false);
@@ -30,6 +33,10 @@ export default function Login() {
     const passwordEl = elements.password;
 
     if (emailEl.validity.valid && passwordEl.validity.valid) {
+      login ({
+        email:emailEl.value,
+        password:passwordEl.value
+      });
       setIsValid(true);
       setTotalError("");
       console.log('Все в порядке');
@@ -38,6 +45,21 @@ export default function Login() {
       setTotalError("Заполните все поля формы");
       console.log('Заполните все поля формы');
     }
+  }
+
+  function login (formData) {
+    mainApi.login (formData)
+    .then((data) => {
+      if (data.user === undefined) {
+        setTotalError(data.message);
+      } else {
+        localStorage.setItem('_token', data.token);
+        setLoggedIn(true);
+        setCurrentUser(data.user);
+        navigate("/movies", { replace: true });
+      }
+    })
+    .catch((err) => console.log(err));
   }
 
   return (

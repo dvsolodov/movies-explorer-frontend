@@ -1,10 +1,11 @@
 import './NotFound.css';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function NotFound() {
-  const navigation = useNavigate();
-  const goBack = () => {
-    navigation(-1);
+  const navigate = useNavigate();
+
+  function goBack() {
+    navigate(-1);
   }
 
   return (
