@@ -6,18 +6,23 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { moviesApi } from '../../utils/MoviesApi';
 import { useEffect, useState } from 'react';
+import { ls } from '../../utils/LocalStorage';
+import {
+  filterMoviesByTime,
+  filterMoviesBySearchText
+} from '../../utils/utils';
 
 export default function Movies({ onNavPopup }) {
   const [isLoaded, setIsLoaded] = useState(true);
-  const [formData, setFormData] = useState(getFormDataFromStorage());
-  const [movies, setMovies] = useState(getMoviesFromStorage());
+  const [formData, setFormData] = useState(ls.getData('formDataMovies'));
+  const [movies, setMovies] = useState(ls.getData('movies'));
 
   useEffect(() => {
-    setFormDataToStorage(formData);
+    ls.setData('formDataMovies', formData);
   }, [formData]);
 
   useEffect(() => {
-    setMoviesToStorage(movies);
+    ls.getData('movies', movies);
   }, [movies]);
 
   function handleSubmit({searchText, isShorted}) {
@@ -30,9 +35,9 @@ export default function Movies({ onNavPopup }) {
     moviesApi.getMovies()
       .then((movies) => {
         let mvs = movies;
-        const searchText = getFormDataFromStorage().searchText;
+        const searchText = ls.getData('formDataMovies').searchText;
 
-        if (getFormDataFromStorage().isShorted) {
+        if (ls.getData('formDataMovies').isShorted) {
           mvs = filterMoviesByTime(movies);
         }
 
@@ -42,52 +47,12 @@ export default function Movies({ onNavPopup }) {
       .catch((err) => console.log(err));
   }
 
-  function filterMoviesByTime(movies) {
-    return movies.filter((movie) => {
-      return movie.duration <= 40;
-    });
-  }
-
-  function filterMoviesBySearchText(movies, searchText) {
-    return movies.filter((movie) => {
-      const str = `${movie.nameRU} ${movie.nameEN} ${movie.description}`;
-      return str.toLowerCase().includes(searchText.toLowerCase());
-    });
-  }
-
-  function setFormDataToStorage(formData) {
-    localStorage.setItem("formDataMovies", JSON.stringify(formData));
-  }
-
-  function setMoviesToStorage(movies) {
-    localStorage.setItem("movies", JSON.stringify(movies));
-  }
-
-  function getFormDataFromStorage() {
-    const data = JSON.parse(localStorage.getItem("formDataMovies"));
-
-    if (data === null) {
-      return {};
-    }
-
-    return data;
-  }
-
-  function getMoviesFromStorage() {
-    const data = JSON.parse(localStorage.getItem("movies"));
-
-    if (data === null) {
-      return [];
-    }
-
-    return data;
-  }
-
   return (
     <>
       <Header onNavPopup={onNavPopup} />
       <main className="movies">
         <SearchForm onSubmit={handleSubmit} storageData={formData} />
+        {console.log(movies)}
         { isLoaded && <MoviesCardList movies={movies} /> }
         { !isLoaded && <Preloader/> }
       </main>
