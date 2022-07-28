@@ -1,6 +1,6 @@
 import './UserNav.css';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { LoggedInContext } from '../../contexts/LoggedInContext';
 
 export default function UserNav() {
@@ -26,9 +26,9 @@ export default function UserNav() {
 
       { loggedIn &&
         <li className="user-nav__item user-nav__item_account">
-          <Link className="user-nav__link user-nav__link_account" to="/profile">
+          <NavLink className="user-nav__link user-nav__link_account" to="/profile">
             Аккаунт
-          </Link>
+          </NavLink>
         </li>
       }
     </ul>

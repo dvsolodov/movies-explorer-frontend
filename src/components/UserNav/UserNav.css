@@ -24,12 +24,16 @@
   width: auto;
   height: auto;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 12px;
   line-height: 32px;
   text-align: center;
   color: #fff;
   opacity: 1;
+}
+
+.active {
+  font-weight: 500;
 }
 
 .user-nav__link:hover {

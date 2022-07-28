@@ -40,7 +40,7 @@
   display: none;
 }
 
-.site-nav__link_active {
+.active {
   font-weight: 500;
 }
 
