@@ -1,12 +1,13 @@
 import './MoviesCardList.css';
 import {  useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function MoviesCardList({ movies }) {
   const location = useLocation();
   const [allMovies, setAllMovies] = useState(movies);
-  const [moviesCount, setMoviesCount] = useState(4);
+  const currentPath = location.pathname;
+  const [moviesCount, setMoviesCount] = useState(currentPath === "/movies" ? 4 : movies.length - 1);
 
   function handleClick(e) {
     e.preventDefault();
