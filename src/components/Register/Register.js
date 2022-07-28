@@ -45,7 +45,6 @@ export default function Register({ setLoggedIn, setCurrentUser }) {
     } else {
       setIsValid(false);
       setTotalError("Заполните все поля формы");
-      console.log('Заполните все поля формы');
     }
   }
 
