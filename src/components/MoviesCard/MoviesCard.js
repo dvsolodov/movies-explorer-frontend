@@ -10,20 +10,29 @@ import { mainApi } from '../../utils/MainApi';
 export default function MoviesCard({ movie }) {
   const baseUrl = "https://api.nomoreparties.co";
   const location = useLocation();
-  const [like, setLike] = useState(whiteLikeImg);
-  const [dlt, setDlt] = useState('');
+  const locPath = location.pathname;
+  const [btnImg, setBtnImg] = useState();
   const [alt, setAlt] = useState('Добавить в сохраненные');
   const like_class = 'movies-card__like';
   const del_class = 'movies-card__del';
   const pathToImage = location.pathname === "/movies" ? baseUrl + movie.image.url : movie.image;
 
+  useEffect(()=> {
+    if (locPath === "/movies") {
+      setBtnImg(whiteLikeImg);
+    } else {
+      setBtnImg(delImg);
+      setAlt("Удалить из сохраненных");
+    }
+  }, [locPath]);
+
   function handleClick() {
-    if (location.pathname === "/movies") {
-      if (like === whiteLikeImg) {
+    if (locPath === "/movies") {
+      if (btnImg === whiteLikeImg) {
         saveMovie(movie);
         setAlt('Удалить из сохраненных')
       } else {
-        setLike(whiteLikeImg);
+        setBtnImg(whiteLikeImg);
         setAlt('Добавить в сохраненные')
       }
     }
@@ -50,7 +59,7 @@ export default function MoviesCard({ movie }) {
       };
       mainApi.saveMovie(token, data)
         .then((result) => {
-          setLike(redLikeImg);
+          setBtnImg(redLikeImg);
         });
     } else {
       console.log('Что-то пошло не так...');
@@ -58,7 +67,11 @@ export default function MoviesCard({ movie }) {
   }
 
   function toggleBtnClass() {
-    return dlt ? del_class: like_class;
+    if (btnImg === delImg) {
+      return del_class;
+    }
+
+    return like_class;
   }
 
   return (
@@ -73,7 +86,7 @@ export default function MoviesCard({ movie }) {
         <h2 className="movies-card__title" title={movie.nameRU}>{movie.nameRU}</h2>
         <button className="movies-card__button" title={alt} onClick={handleClick}>
           <img className={toggleBtnClass()}
-            src={like}
+            src={btnImg}
             alt={alt}
           ></img>
         </button>
