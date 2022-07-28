@@ -7,7 +7,7 @@ class LocalStorage {
     let data = JSON.parse(localStorage.getItem(itemKey));
 
     if (data === null) {
-      data = {};
+      data = [];
     }
 
     return data;
