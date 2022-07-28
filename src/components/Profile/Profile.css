@@ -74,6 +74,13 @@
   height: auto;
 }
 
+.profile__actions-wrap {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+}
+
 .profile__action {
   display: block;
   margin: 0 auto;
@@ -99,6 +106,19 @@
 .profile__action_color_red {
   padding: 16px 0 0 0;
   color: #ee3465;
+}
+
+.profile__action_save {
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  height: 45px;
+  background: #3456F3;
+  border-radius: 3px;
+}
+
+.profile__action_invisible {
+  display: none;
 }
 
 @media screen and (min-width: 768px) and (max-width: 1279px) {
