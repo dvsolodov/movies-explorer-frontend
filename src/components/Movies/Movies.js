@@ -22,7 +22,7 @@ export default function Movies({ onNavPopup }) {
   }, [formData]);
 
   useEffect(() => {
-    ls.getData('movies', movies);
+    ls.setData('movies', movies);
   }, [movies]);
 
   function handleSubmit({searchText, isShorted}) {
