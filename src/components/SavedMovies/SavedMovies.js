@@ -1,5 +1,5 @@
 import './SavedMovies.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -18,11 +18,15 @@ export default function SavedMovies({ onNavPopup }) {
   const [movies, setMovies] = useState(ls.getData('savedMovies'));
 
   useEffect(() => {
+
+  }, []);
+
+  useEffect(() => {
     ls.setData('formDataSavedMovies', formData);
   }, [formData]);
 
   useEffect(() => {
-    ls.getData('savedMovies', movies);
+    ls.setData('savedMovies', movies);
   }, [movies]);
 
   function handleSubmit({searchText, isShorted}) {
