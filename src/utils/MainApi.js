@@ -40,6 +40,15 @@ class MainApi {
       .then((response) => response.json());
   }
 
+  updateUser(token, data) {
+    this._headers["Authorization"] = `Bearer ${token}`;
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify(data)
+    });
+  }
+
   getMovies(token) {
     this._headers["Authorization"] = `Bearer ${token}`;
     return fetch(`${this._baseUrl}/movies`, {
@@ -47,6 +56,17 @@ class MainApi {
     })
       .then((response) => response.json());
   }
+
+  saveMovie(token, data) {
+    this._headers["Authorization"] = `Bearer ${token}`;
+    return fetch(`${this._baseUrl}/movies`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify(data)
+    })
+      .then((response) => response.json());
+  }
+
 }
 
 
