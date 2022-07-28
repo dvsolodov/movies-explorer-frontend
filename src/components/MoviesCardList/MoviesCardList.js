@@ -18,8 +18,8 @@ export default function MoviesCardList({ movies }) {
   return (
     <section className="movies-card-list">
       <div className="movies-card-list__wrap">
-        { allMovies.slice(0, moviesCount).map((movie) => {
-          return <MoviesCard movie={movie} key={movie.id} />
+        { allMovies.slice(0, moviesCount).map((movie, index) => {
+          return <MoviesCard movie={movie} key={index} />
         })}
       </div>
       { location.pathname === "/movies" && allMovies.length > 4 && allMovies.length >= moviesCount &&
