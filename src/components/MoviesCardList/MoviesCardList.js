@@ -7,7 +7,7 @@ export default function MoviesCardList({ movies }) {
   const location = useLocation();
   const [allMovies, setAllMovies] = useState(movies);
   const currentPath = location.pathname;
-  const [moviesCount, setMoviesCount] = useState(currentPath === "/movies" ? 4 : movies.length - 1);
+  const [moviesCount, setMoviesCount] = useState(currentPath === "/movies" ? 4 : movies.length);
 
   function handleClick(e) {
     e.preventDefault();
