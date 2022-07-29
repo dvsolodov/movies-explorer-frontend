@@ -23,12 +23,6 @@ function App() {
     checkToken();
   }, []);
 
-  useEffect(() => {
-    if (loggedIn) {
-      getSavedMovies();
-    }
-  }, [loggedIn]);
-
   function handleNavPopupClick() {
     setIsNavPopupOpen(true);
   }
@@ -50,17 +44,6 @@ function App() {
             setCurrentUser(result);
             setLoggedIn(true);
           }
-        });
-    }
-  }
-
-  function getSavedMovies() {
-    const token = localStorage.getItem('_token');
-    console.log(token);
-    if (token !== null) {
-      mainApi.getMovies(token)
-        .then((result) => {
-          localStorage.setItem('savedMovies', JSON.stringify(result));
         });
     }
   }
