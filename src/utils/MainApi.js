@@ -67,6 +67,15 @@ class MainApi {
       .then((response) => response.json());
   }
 
+  deleteMovie(token, movieId) {
+    this._headers["Authorization"] = `Bearer ${token}`;
+    return fetch(`${this._baseUrl}/movies/${movieId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    })
+      .then((response) => response.json());
+  }
+
 }
 
 

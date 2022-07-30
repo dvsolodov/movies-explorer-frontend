@@ -39,11 +39,9 @@ export default function Login({ setLoggedIn, setCurrentUser }) {
       });
       setIsValid(true);
       setTotalError("");
-      console.log('Все в порядке');
     } else {
       setIsValid(false);
       setTotalError("Заполните все поля формы");
-      console.log('Заполните все поля формы');
     }
   }
 

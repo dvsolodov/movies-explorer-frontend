@@ -1,54 +1,42 @@
 import './SavedMovies.css';
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import {
-  filterMoviesByTime,
-  filterMoviesBySearchText
-} from '../../utils/utils';
+import { filterSavedMovies } from '../../utils/utils';
 import { mainApi } from '../../utils/MainApi';
 import { ls } from '../../utils/LocalStorage';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function SavedMovies({ onNavPopup }) {
+  const currentUser = useContext(CurrentUserContext);
   const [isLoaded, setIsLoaded] = useState(true);
-  const [formData, setFormData] = useState(ls.getData('formDataSavedMovies'));
-  const [movies, setMovies] = useState(ls.getData('savedMovies'));
-
-  useEffect(() => {
-
-  }, []);
+  const [formData, setFormData] = useState(ls.getData(currentUser._id + 'formDataSavedMovies'));
+  const [movies, setMovies] = useState(ls.getData(currentUser._id + 'savedMoviesSearch'));
 
   useEffect(() => {
     ls.setData('formDataSavedMovies', formData);
   }, [formData]);
 
-  useEffect(() => {
-    ls.setData('savedMovies', movies);
-  }, [movies]);
-
   function handleSubmit({searchText, isShorted}) {
     setIsLoaded(false);
     setFormData({searchText, isShorted});
-    getSavedMovies();
+    ls.setData(currentUser._id + "formDataSavedMovies", {searchText, isShorted});
+    getMovies();
   }
 
-  function getSavedMovies() {
+  function getMovies() {
     const token = localStorage.getItem('_token');
-    console.log(token);
     if (token !== null) {
       mainApi.getMovies(token)
         .then((result) => {
-          let mvs = movies;
-          const searchText = ls.getData('formDataSavedMovies').searchText;
+          const formData = ls.getData(currentUser._id + "formDataSavedMovies");
+          const filteredMovies = filterSavedMovies(result, formData.searchText, formData.isShorted);
 
-          if (ls.getData('formDataSavedMovies').isShorted) {
-            mvs = filterMoviesByTime(movies);
-          }
-
-          setMovies(filterMoviesBySearchText(mvs, searchText));
+          ls.setData(currentUser._id + "savedMoviesSearch", filteredMovies);
+          setMovies(filteredMovies);
           setIsLoaded(true);
         });
     }
@@ -59,7 +47,6 @@ export default function SavedMovies({ onNavPopup }) {
       <Header onNavPopup={onNavPopup} />
       <main className="saved-movies">
         <SearchForm onSubmit={handleSubmit} storageData={formData} />
-        {console.log(movies)}
         { isLoaded && <MoviesCardList movies={movies} /> }
         { !isLoaded && <Preloader/> }
       </main>

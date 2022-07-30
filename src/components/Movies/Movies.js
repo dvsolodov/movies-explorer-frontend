@@ -5,46 +5,68 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { moviesApi } from '../../utils/MoviesApi';
-import { useEffect, useState } from 'react';
+import { mainApi } from '../../utils/MainApi';
+import { useEffect, useState, useContext } from 'react';
 import { ls } from '../../utils/LocalStorage';
-import {
-  filterMoviesByTime,
-  filterMoviesBySearchText
-} from '../../utils/utils';
+import { filterMovies } from '../../utils/utils';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function Movies({ onNavPopup }) {
+  const currentUser = useContext(CurrentUserContext);
+  const [error, setError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
-  const [formData, setFormData] = useState(ls.getData('formDataMovies'));
-  const [movies, setMovies] = useState(ls.getData('movies'));
+  const [formData, setFormData] = useState(ls.getData(currentUser._id + 'formDataMovies'));
+  const [movies, setMovies] = useState(ls.getData(currentUser._id + 'movies'));
 
   useEffect(() => {
-    ls.setData('formDataMovies', formData);
+    ls.setData(currentUser._id + "formDataMovies", formData);
   }, [formData]);
 
-  useEffect(() => {
-    ls.setData('movies', movies);
-  }, [movies]);
-
-  function handleSubmit({searchText, isShorted}) {
+  const handleSubmit = ({searchText, isShorted}) => {
     setIsLoaded(false);
     setFormData({searchText, isShorted});
     getMovies();
   }
 
-  function getMovies() {
+  const getMovies = () => {
     moviesApi.getMovies()
       .then((movies) => {
-        let mvs = movies;
-        const searchText = ls.getData('formDataMovies').searchText;
-
-        if (ls.getData('formDataMovies').isShorted) {
-          mvs = filterMoviesByTime(movies);
+        if (movies.message !== undefined) {
+          throw new Error(movies.message)
         }
 
-        setMovies(filterMoviesBySearchText(mvs, searchText));
-        setIsLoaded(true);
+        ls.setData(currentUser._id + "movies", movies);
+        getSavedMovies();
       })
-      .catch((err) => console.log(err));
+        .catch((err) => {
+          setError(true);
+          console.log(err)
+        });
+  }
+
+  const getSavedMovies = () => {
+    const token = localStorage.getItem("_token");
+    if (token !== null) {
+      mainApi.getMovies(token)
+        .then((result) => {
+          if (result.message !== undefined) {
+            throw new Error(result.message)
+          }
+
+          const mvs = ls.getData(currentUser._id + "movies");
+          const formData = ls.getData(currentUser._id + "formDataMovies");
+          const filteredData = filterMovies(mvs, result, formData.searchText, formData.isShorted);
+
+          ls.setData(currentUser._id + "savedMovies", result);
+          ls.setData(currentUser._id + "movies", filteredData);
+          setIsLoaded(true);
+          setMovies(filteredData);
+        })
+        .catch((err) => {
+          setError(true);
+          console.log(err)
+        });
+    }
   }
 
   return (
@@ -52,8 +74,7 @@ export default function Movies({ onNavPopup }) {
       <Header onNavPopup={onNavPopup} />
       <main className="movies">
         <SearchForm onSubmit={handleSubmit} storageData={formData} />
-        {console.log(movies)}
-        { isLoaded && <MoviesCardList movies={movies} /> }
+        { isLoaded && <MoviesCardList movies={movies} error={error} /> }
         { !isLoaded && <Preloader/> }
       </main>
       <Footer />
