@@ -1,7 +1,7 @@
 class MainApi {
   constructor() {
-    //this._baseUrl = "https://api.solodov-dplm.students.nomoredomains.xyz";
-    this._baseUrl = "http://localhost:3000";
+    this._baseUrl = "https://api.solodov-dplm.students.nomoredomains.xyz";
+    //this._baseUrl = "http://localhost:3000";
     this._headers = {
       "Content-Type": "application/json"
     };
