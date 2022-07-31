@@ -52,7 +52,7 @@ export default function Profile({ onNavPopup, setLoggedIn, setCurrentUser }) {
     ls.removeData(currentUser._id + "savedMoviesSearch");
     ls.removeData(currentUser._id + "movies");
     setCurrentUser({});
-    navigate("../signin", { replace: true});
+    navigate("../", { replace: true});
   }
 
   function handleAClickEditButton(e) {
