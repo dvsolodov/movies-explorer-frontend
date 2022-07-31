@@ -1,6 +1,6 @@
 import './App.css';
 import { useEffect, useState} from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -16,6 +16,8 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import ForbiddenRoute from '../ForbiddenRoute/ForbiddenRoute';
 
 function App() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState();
@@ -41,9 +43,11 @@ function App() {
             setCurrentUser({});
             setLoggedIn(false);
             localStorage.removeItem('_token');
+            navigate("/");
           } else {
             setCurrentUser(result);
             setLoggedIn(true);
+            navigate(location.pathname);
           }
         });
     }
