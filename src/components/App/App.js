@@ -13,6 +13,7 @@ import { mainApi } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { LoggedInContext } from '../../contexts/LoggedInContext';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import ForbiddenRoute from '../ForbiddenRoute/ForbiddenRoute';
 
 function App() {
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
@@ -72,8 +73,16 @@ function App() {
                 />
               </ProtectedRoute>
             } />
-            <Route path="/signin" element={<Login setLoggedIn={setLoggedIn} setCurrentUser={setCurrentUser} />} />
-            <Route path="/signup" element={<Register setLoggedIn={setLoggedIn} setCurrentUser={setCurrentUser} />} />
+            <Route path="/signin" element={
+              <ForbiddenRoute>
+                <Login setLoggedIn={setLoggedIn} setCurrentUser={setCurrentUser} />
+              </ForbiddenRoute>
+            }/>
+            <Route path="/signup" element={
+              <ForbiddenRoute>
+                <Register setLoggedIn={setLoggedIn} setCurrentUser={setCurrentUser} />
+              </ForbiddenRoute>
+            } />
             <Route path="*" element={<NotFound />} />
           </Routes>
 
