@@ -4,6 +4,7 @@ import Header from '../Header/Header';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useNavigate } from 'react-router-dom';
 import { mainApi } from '../../utils/MainApi';
+import { ls } from '../../utils/LocalStorage';
 
 
 export default function Profile({ onNavPopup, setLoggedIn, setCurrentUser }) {
@@ -43,8 +44,13 @@ export default function Profile({ onNavPopup, setLoggedIn, setCurrentUser }) {
 
   function handleClickExitButton() {
     setLoggedIn(false);
-    setCurrentUser({});
     localStorage.removeItem('_token');
+    ls.removeData(currentUser._id + "formDataMovies");
+    ls.removeData(currentUser._id + "formDataSavedMovies");
+    ls.removeData(currentUser._id + "savedMovies");
+    ls.removeData(currentUser._id + "savedMoviesSearch");
+    ls.removeData(currentUser._id + "movies");
+    setCurrentUser({});
     navigate("../signin", { replace: true});
   }
 
