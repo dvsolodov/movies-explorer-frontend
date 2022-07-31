@@ -6,6 +6,7 @@ import AuthFormButton from '../AuthFormButton/AuthFormButton';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mainApi } from '../../utils/MainApi';
+import { EmailPattern } from '../../utils/constants';
 
 export default function Login({ setLoggedIn, setCurrentUser }) {
   const navigate = useNavigate();
@@ -68,8 +69,10 @@ export default function Login({ setLoggedIn, setCurrentUser }) {
         <form className="login__form" name="login" onSubmit={handleSubmit} noValidate>
           <Input
             validationRules={{
+              pattern:EmailPattern,
               required:true
             }}
+            customErrorMsg="Некорректный адрес электронной почты"
             setIsValid={setIsValidEmail}
             inputType="email"
             inputTitle="E-mail"
@@ -79,6 +82,7 @@ export default function Login({ setLoggedIn, setCurrentUser }) {
             validationRules={{
               required:true
             }}
+            customErrorMsg=""
             setIsValid={setIsValidPassword}
             inputType="password"
             inputTitle="Пароль"

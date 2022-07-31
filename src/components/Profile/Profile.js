@@ -5,6 +5,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useNavigate } from 'react-router-dom';
 import { mainApi } from '../../utils/MainApi';
 import { ls } from '../../utils/LocalStorage';
+import { NamePattern, EmailPattern } from '../../utils/constants';
 
 
 export default function Profile({ onNavPopup, setLoggedIn, setCurrentUser }) {
@@ -69,6 +70,8 @@ export default function Profile({ onNavPopup, setLoggedIn, setCurrentUser }) {
     const emailEl = elems.email;
     const data = {name: nameEl.value, email: emailEl.value};
 
+    console.log('email  bad ' + nameEl.validationMessage);
+
     if (!nameEl.validity.valid || !emailEl.validity.valid) {
       if (!nameEl.validity.valid) {
         setEditMsg("Имя должно состоять из 2-30 символов латиницы, кириллицы, пробелов или дефисов");
@@ -114,7 +117,9 @@ export default function Profile({ onNavPopup, setLoggedIn, setCurrentUser }) {
           <label className="profile__field">
             <p className="profile__field-title">Имя</p>
             <input className="profile__field-data"
-              pattern="[a-zA-Zа-яА-ЯёЁ_-]{2,30}"
+              pattern={NamePattern}
+              minLength="2"
+              maxLength="30"
               value={userName}
               onChange={handleNameInputChange}
               name="name"
@@ -124,6 +129,7 @@ export default function Profile({ onNavPopup, setLoggedIn, setCurrentUser }) {
           <label className="profile__field">
             <p className="profile__field-title">Email</p>
             <input className="profile__field-data"
+              pattern={EmailPattern}
               type="email"
               value={userEmail}
               onChange={handleEmailInputChange}
