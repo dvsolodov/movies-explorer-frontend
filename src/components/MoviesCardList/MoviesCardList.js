@@ -6,7 +6,6 @@ import { WindowWidth1280, WindowWidth320, WindowWidth768 } from '../../utils/con
 
 export default function MoviesCardList({ movies, error }) {
   const location = useLocation();
-  const [allMovies, setAllMovies] = useState(movies);
   const currentPath = location.pathname;
   const [moviesCount, setMoviesCount] = useState(currentPath === "/movies" ? getRow() : movies.length);
   const [row, setRow] = useState(() => getRow());
@@ -65,11 +64,11 @@ export default function MoviesCardList({ movies, error }) {
       }
 
       <div className="movies-card-list__wrap">
-        { !error && allMovies.slice(0, moviesCount).map((movie, index) => {
+        { !error && movies.slice(0, moviesCount).map((movie, index) => {
           return <MoviesCard movie={movie} key={index} />
         })}
       </div>
-      { location.pathname === "/movies" && allMovies.length > row && allMovies.length >= moviesCount &&
+      { location.pathname === "/movies" && movies.length > row && movies.length >= moviesCount &&
         <button className="movies-card-list__more-btn" onClick={handleClick}>Ещё</button>
       }
     </section>

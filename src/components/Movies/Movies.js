@@ -16,57 +16,79 @@ export default function Movies({ onNavPopup }) {
   const [error, setError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
   const [formData, setFormData] = useState(ls.getData(currentUser._id + 'formDataMovies'));
-  const [movies, setMovies] = useState(ls.getData(currentUser._id + 'movies'));
+  const [movies, setMovies] = useState(getMovies());
+  const [savedMovies, setSavedMovies] = useState(ls.getData(currentUser._id + 'savedMovies'));
+
+  function getMovies() {
+    const allMovies = ls.getData(currentUser._id + 'movies');
+    const moviesSearch = ls.getData(currentUser._id + "moviesSearch");
+
+    if (moviesSearch.length === 0) {
+      return allMovies;
+    } else {
+      return moviesSearch;
+    }
+  }
 
   useEffect(() => {
-    ls.setData(currentUser._id + "formDataMovies", formData);
-  }, [formData]);
+    const allMovies = ls.getData(currentUser._id + 'movies');
+
+    if (allMovies.length === 0) {
+      const token = localStorage.getItem("_token");
+      if (token) {
+        setIsLoaded(false);
+        moviesApi.getMovies()
+          .then(result => {
+            ls.setData(currentUser._id + "movies", result);
+
+          mainApi.getMovies(token)
+            .then(result => {
+              ls.setData(currentUser._id + "savedMovies", result);
+              const moviesLs = ls.getData(currentUser._id + "movies");
+              const savedMoviesLs = ls.getData(currentUser._id + "savedMovies");
+              const filteredData = filterMovies(moviesLs, savedMoviesLs, "", false);
+
+              ls.removeData(currentUser._id + "movies");
+              ls.setData(currentUser._id + "movies", filteredData);
+
+              setMovies(filteredData);
+              setSavedMovies(savedMoviesLs);
+              setIsLoaded(true);
+            })
+            .catch((err) => {
+              console.log(err);
+              setError(true);
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            setError(true);
+          });
+      } else {
+        console.log("Необходима авторизация");
+      }
+    }
+  }, []);
 
   const handleSubmit = ({searchText, isShorted}) => {
     setIsLoaded(false);
     setFormData({searchText, isShorted});
-    getMovies();
-  }
 
-  const getMovies = () => {
-    moviesApi.getMovies()
-      .then((movies) => {
-        if (movies.message !== undefined) {
-          throw new Error(movies.message)
-        }
+    const movieLs = ls.getData(currentUser._id + "movies");
+    const filteredData = filterMovies(movieLs, savedMovies, searchText, isShorted);
 
-        ls.setData(currentUser._id + "movies", movies);
-        getSavedMovies();
-      })
-        .catch((err) => {
-          setError(true);
-          console.log(err)
-        });
-  }
-
-  const getSavedMovies = () => {
-    const token = localStorage.getItem("_token");
-    if (token !== null) {
-      mainApi.getMovies(token)
-        .then((result) => {
-          if (result.message !== undefined) {
-            throw new Error(result.message)
-          }
-
-          const mvs = ls.getData(currentUser._id + "movies");
-          const formData = ls.getData(currentUser._id + "formDataMovies");
-          const filteredData = filterMovies(mvs, result, formData.searchText, formData.isShorted);
-
-          ls.setData(currentUser._id + "savedMovies", result);
-          ls.setData(currentUser._id + "movies", filteredData);
-          setIsLoaded(true);
-          setMovies(filteredData);
-        })
-        .catch((err) => {
-          setError(true);
-          console.log(err)
-        });
+    if (!filteredData) {
+      setError(true);
+      setIsLoaded(true);
+      return;
     }
+
+    ls.removeData(currentUser._id + "moviesSearch");
+    ls.setData(currentUser._id + "moviesSearch", filteredData);
+    ls.setData(currentUser._id + "formDataMovies", {searchText, isShorted})
+
+    setMovies(filteredData);
+    setIsLoaded(true);
   }
 
   return (

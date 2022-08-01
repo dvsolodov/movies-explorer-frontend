@@ -6,7 +6,6 @@ import whiteLikeImg from '../../images/movies-card__white-like.svg';
 import redLikeImg from '../../images/movies-card__red-like.svg';
 import delImg from '../../images/saved-movies__delete.svg';
 import { mainApi } from '../../utils/MainApi';
-import { moviesApi } from '../../utils/MoviesApi';
 import { ls } from '../../utils/LocalStorage';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
@@ -15,26 +14,26 @@ export default function MoviesCard({ movie }) {
   const baseUrl = "https://api.nomoreparties.co";
   const location = useLocation();
   const locPath = location.pathname;
-  const [btnImg, setBtnImg] = useState();
   const [alt, setAlt] = useState('Добавить в сохраненные');
   const like_class = 'movies-card__like';
   const del_class = 'movies-card__del';
   const pathToImage = location.pathname === "/movies" ? baseUrl + movie.image.url : movie.image;
+  const [btnImg, setBtnImg] = useState();
 
-  useEffect(()=> {
+  useEffect(() => {
     if (locPath === "/movies") {
       if (movie.savedMovie === "") {
-        setBtnImg(whiteLikeImg);
         setAlt('Добавить в сохраненные')
+        setBtnImg(whiteLikeImg);
       } else {
-        setBtnImg(redLikeImg);
         setAlt("Удалить из сохраненных");
+        setBtnImg(redLikeImg);
       }
     } else {
-      setBtnImg(delImg);
       setAlt("Удалить из сохраненных");
+      setBtnImg(delImg);
     }
-  }, [locPath]);
+  }, []);
 
   function handleClick(e) {
     e.preventDefault()
@@ -46,7 +45,7 @@ export default function MoviesCard({ movie }) {
         deleteMovie(movie.savedMovie);
       }
     } else {
-      deleteMovie(movie._id);
+      deleteMovie(movie.savedMovie);
       e.target.closest(".movies-card").remove();
     }
   }
@@ -60,10 +59,11 @@ export default function MoviesCard({ movie }) {
             throw new Error(result.message);
           }
 
-          const movies = ls.getData(currentUser._id + "movies");
-          const savedMovies = ls.getData(currentUser._id + "savedMoviesSearch");
+          const moviesLs = ls.getData(currentUser._id + "movies");
+          const moviesSearchLs = ls.getData(currentUser._id + "moviesSearch");
+          const savedMoviesLs = ls.getData(currentUser._id + "savedMovies");
 
-          movies.forEach((mvi) => {
+          moviesLs.forEach((mvi) => {
             if (locPath === "/movies") {
               if (movie.id.toString() === mvi.id.toString()) {
                 mvi.savedMovie = "";
@@ -75,7 +75,19 @@ export default function MoviesCard({ movie }) {
             }
           });
 
-          savedMovies.forEach((mvi, index, arr) => {
+          moviesSearchLs.forEach((mvi) => {
+            if (locPath === "/movies") {
+              if (movie.id.toString() === mvi.id.toString()) {
+                mvi.savedMovie = "";
+              }
+            } else {
+              if (movie.movieId.toString() === mvi.id.toString()) {
+                mvi.savedMovie = "";
+              }
+            }
+          });
+
+          savedMoviesLs.forEach((mvi, index, arr) => {
             if (locPath === "/movies") {
               if (movie.id.toString() === mvi.movieId.toString()) {
                 arr.splice(index, 1);
@@ -87,10 +99,12 @@ export default function MoviesCard({ movie }) {
             }
           });
 
-          ls.removeData(currentUser._id + "savedMoviesSearch");
-          ls.setData(currentUser._id + "savedMoviesSearch", savedMovies);
+          ls.removeData(currentUser._id + "savedMovies");
+          ls.setData(currentUser._id + "savedMovies", savedMoviesLs);
           ls.removeData(currentUser._id + "movies");
-          ls.setData(currentUser._id + "movies", movies);
+          ls.setData(currentUser._id + "movies", moviesLs);
+          ls.removeData(currentUser._id + "moviesSearch");
+          ls.setData(currentUser._id + "moviesSearch", moviesSearchLs);
 
           setBtnImg(whiteLikeImg);
           setAlt('Добавить в сохраненные')
@@ -102,6 +116,9 @@ export default function MoviesCard({ movie }) {
   function saveMovie(movie) {
     const token = localStorage.getItem("_token");
     if (token !== null) {
+      const moviesLs = ls.getData(currentUser._id + "movies");
+      const moviesSearchLs = ls.getData(currentUser._id + "moviesSearch");
+      const savedMoviesLs = ls.getData(currentUser._id + "savedMovies");
       const country = movie.country === null ? 'нет' : movie.country;
       const nameEN = movie.nameEN === null || movie.nameEN === "" ? 'нет' : movie.nameEN;
       const image = baseUrl + movie.image.url;
@@ -120,22 +137,47 @@ export default function MoviesCard({ movie }) {
         movieId: movie.id,
       };
 
-      mainApi.saveMovie(token, data)
-        .then((result) => {
-          const movies = ls.getData(currentUser._id + "movies");
-
-          movies.forEach((mvi) => {
-            if (result.movieId.toString() === mvi.id.toString()) {
-              mvi.savedMovie = result._id;
-            }
-          });
-
-          ls.removeData(currentUser._id + "movies");
-          ls.setData(currentUser._id + "movies", movies);
-
-          setBtnImg(redLikeImg);
-          setAlt('Удалить из сохраненные')
+      try {
+        savedMoviesLs.forEach((mvi, index, arr) => {
+          if (data.movieId.toString() === mvi.movieId.toString()) {
+            throw new Error("Такой фильм уже сохранен");
+          }
         });
+
+        mainApi.saveMovie(token, data)
+          .then((result) => {
+
+            movie.savedMovie = result._id;
+
+            moviesLs.forEach((mvi) => {
+              if (movie.id.toString() === mvi.id.toString()) {
+                mvi.savedMovie = result._id;
+              }
+            });
+
+            moviesSearchLs.forEach((mvi) => {
+              if (movie.id.toString() === mvi.id.toString()) {
+                mvi.savedMovie = result._id;
+              }
+            });
+
+            data.savedMovie = result._id;
+            savedMoviesLs.push(data);
+
+            ls.removeData(currentUser._id + "movies");
+            ls.setData(currentUser._id + "movies", moviesLs);
+            ls.removeData(currentUser._id + "moviesSearch");
+            ls.setData(currentUser._id + "moviesSearch", moviesSearchLs);
+            ls.removeData(currentUser._id + "savedMovies");
+            ls.setData(currentUser._id + "savedMovies", savedMoviesLs);
+
+            setBtnImg(redLikeImg);
+            setAlt('Удалить из сохраненные')
+          });
+      } catch(err) {
+        console.log(err);
+        return;
+      }
     } else {
       console.log('Что-то пошло не так...');
     }
