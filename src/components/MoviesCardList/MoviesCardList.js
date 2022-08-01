@@ -2,6 +2,7 @@ import './MoviesCardList.css';
 import {  useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { useEffect, useState } from 'react';
+import { WindowWidth1280, WindowWidth320, WindowWidth768 } from '../../utils/constants';
 
 export default function MoviesCardList({ movies, error }) {
   const location = useLocation();
@@ -30,14 +31,14 @@ export default function MoviesCardList({ movies, error }) {
 
   function getRow() {
     const windowWidth = document.documentElement.clientWidth;
-    let row = 4;
+    let row = WindowWidth1280;
 
     if (windowWidth >= 768 && windowWidth < 1280) {
-      row = 2;
+      row = WindowWidth768;
     }
 
     if (windowWidth >= 320 && windowWidth < 768) {
-      row = 5;
+      row = WindowWidth320;
     }
 
     return row;

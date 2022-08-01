@@ -1,3 +1,5 @@
+import { ShortFilmDuration } from "./constants";
+
 function formatTime(timeInMinutes) {
   const mins = timeInMinutes % 60;
   const hours = (timeInMinutes - mins) / 60;
@@ -41,7 +43,7 @@ function filterMovies(movies, savedMovies, searchText, isShorted) {
 
 function filterSavedMovies(savedMovies, searchText, isShorted) {
   return savedMovies.filter((movie) => {
-    if (isShorted && movie.duration > 40) {
+    if (isShorted && movie.duration > ShortFilmDuration) {
       return false;
     }
 
