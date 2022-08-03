@@ -19,9 +19,9 @@ export default function MoviesCard({ movie }) {
   const del_class = 'movies-card__del';
   const pathToImage = location.pathname === "/movies" ? baseUrl + movie.image.url : movie.image;
   const [btnImg, setBtnImg] = useState();
+  const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
-    console.log(movie);
     if (locPath === "/movies") {
       if (movie.savedMovie === "") {
         setAlt('Добавить в сохраненные')
@@ -33,6 +33,10 @@ export default function MoviesCard({ movie }) {
     } else {
       setAlt("Удалить из сохраненных");
       setBtnImg(delImg);
+    }
+
+    if (errMsg !== "") {
+      setTimeout(setErrMsg, 2000, "");
     }
   });
 
@@ -46,7 +50,11 @@ export default function MoviesCard({ movie }) {
         deleteMovie(movie.savedMovie);
       }
     } else {
-      deleteMovie(movie.savedMovie);
+      if (movie._id === undefined) {
+        deleteMovie(movie.savedMovie);
+      } else {
+        deleteMovie(movie._id);
+      }
       e.target.closest(".movies-card").remove();
     }
   }
@@ -56,7 +64,11 @@ export default function MoviesCard({ movie }) {
     if (token !== null) {
       mainApi.deleteMovie(token, movieId)
         .then((result) => {
+          let error = false;
+
           if (result.message !== "Фильм удален") {
+            setErrMsg("Ошибка удаления фильма.");
+            error = true;
             throw new Error(result.message);
           }
 
@@ -143,12 +155,17 @@ export default function MoviesCard({ movie }) {
       try {
         savedMoviesLs.forEach((mvi, index, arr) => {
           if (data.movieId.toString() === mvi.movieId.toString()) {
+            setErrMsg("Такой фильм уже сохранен");
             throw new Error("Такой фильм уже сохранен");
           }
         });
 
         mainApi.saveMovie(token, data)
           .then((result) => {
+            if(result._id === undefined) {
+              setErrMsg("Ошибка сохранения фильма");
+              throw new Error("Ошибка сохранения фильма");
+            }
 
             movie.savedMovie = result._id;
 
@@ -212,6 +229,9 @@ export default function MoviesCard({ movie }) {
         </button>
       </div>
       <p className="movies-card__duration">{formatTime(movie.duration)}</p>
+      <p className={`movies-card__error-msg${ errMsg === "" ? " movies-card__error-msg_invisible" : ""}`}>
+        <span className="movies-card__error-msg_text_center">{errMsg}</span>
+      </p>
     </section>
   );
 }

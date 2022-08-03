@@ -8,7 +8,7 @@ import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
 import { useEffect, useState, useContext } from 'react';
 import { ls } from '../../utils/LocalStorage';
-import { filterSearch, getMap, markSavedMovies } from '../../utils/utils';
+import { filterSearch, markSavedMovies } from '../../utils/utils';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function Movies({ onNavPopup }) {
@@ -44,14 +44,12 @@ export default function Movies({ onNavPopup }) {
             .then(result => {
               ls.setData(currentUser._id + "savedMovies", result);
               const moviesLs = ls.getData(currentUser._id + "movies");
-              const savedMoviesLs = ls.getData(currentUser._id + "savedMovies");
-              const mapArray = getMap(savedMoviesLs);
-              markSavedMovies(moviesLs, mapArray);
+              const handelesMovies = markSavedMovies(moviesLs, result);
 
               ls.removeData(currentUser._id + "movies");
-              ls.setData(currentUser._id + "movies", moviesLs);
+              ls.setData(currentUser._id + "movies", handelesMovies);
 
-              setMovies(moviesLs);
+              setMovies(handelesMovies);
               setIsLoaded(true);
             })
             .catch((err) => {

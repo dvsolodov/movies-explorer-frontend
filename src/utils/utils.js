@@ -7,16 +7,19 @@ function formatTime(timeInMinutes) {
   return `${hours}ч ${mins}м`;
 }
 
-function markSavedMovies(movies, mapArray) {
-  movies.forEach((movie) => {
-    mapArray.forEach((map) => {
-      const idsArr = map.split(" ");
+function markSavedMovies(movies, savedMovies) {
+  const mapArray = getMap(savedMovies);
 
-      if (movie.id.toString() === idsArr[1].toString()) {
-        movie.savedMovie = idsArr[0];
-      }
-    });
+  movies.every((movie) => {
+    if (mapArray[movie.id] === undefined) {
+      movie.savedMovie = "";
+    } else {
+      movie.savedMovie = mapArray[movie.id];
+    }
+
+    return true;
   });
+  return movies;
 }
 
 function filterSearch(movies, searchText, isShorted) {
@@ -37,13 +40,11 @@ function filterSearch(movies, searchText, isShorted) {
   });
 }
 
-function getMap(savedMovie) {
+function getMap(savedMovies) {
   const mapArray = [];
-  let i = 0;
 
-  savedMovie.forEach((movie) => {
-    mapArray[i] = movie._id + " " + movie.movieId;
-    i++;
+  savedMovies.forEach((movie) => {
+    mapArray[movie.movieId] = movie._id;
   });
 
   return mapArray;
