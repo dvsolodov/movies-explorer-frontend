@@ -3,36 +3,109 @@ import { Link } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 import Input from '../Input/Input';
 import AuthFormButton from '../AuthFormButton/AuthFormButton';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { mainApi } from '../../utils/MainApi';
+import { NamePattern, EmailPattern } from '../../utils/constants';
 
-export default function Register() {
+export default function Register({ setLoggedIn, setCurrentUser }) {
+  const navigate = useNavigate();
+  const [isValidName, setIsValidName] = useState(true);
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
+  const [isValid, setIsValid] = useState(false);
+  const [totalError, setTotalError] = useState("");
+
+  useEffect(() => {
+    setTotalError("");
+
+    if (isValidName && isValidEmail && isValidPassword) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [isValidName, isValidEmail, isValidPassword]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const form = document.forms.register;
+    const elements = form.elements;
+    const nameEl = elements.name;
+    const emailEl = elements.email;
+    const passwordEl = elements.password;
+
+    if (nameEl.validity.valid && emailEl.validity.valid && passwordEl.validity.valid) {
+      register({
+        name:nameEl.value,
+        email:emailEl.value,
+        password:passwordEl.value
+      });
+      setIsValid(true);
+      setTotalError("");
+    } else {
+      setIsValid(false);
+      setTotalError("Заполните все поля формы");
+    }
+  }
+
+  function register(formData) {
+    mainApi.register(formData)
+    .then((data) => {
+      if (data.message !== undefined) {
+        setTotalError(data.message);
+      } else {
+        localStorage.setItem('_token', data.token);
+        setLoggedIn(true);
+        setCurrentUser(data.user);
+        navigate("/movies", { replace: true });
+      }
+    })
+    .catch((err) => console.log(err));
+  }
+
   return (
     <section className="register">
       <div className="register__wrap">
         <Logo />
         <h1 className="register__hello">Добро пожаловать!</h1>
-        <form className="register__form">
+        <form className="register__form" name="register" onSubmit={handleSubmit} noValidate>
           <Input
+            validationRules={{
+              pattern:NamePattern,
+              minLength:"2",
+              maxLength:"30",
+              required:true,
+            }}
+            customErrorMsg="2-30 символов латиницы, кириллицы, пробел или дефис"
+            setIsValid={setIsValidName}
             inputType="text"
             inputTitle="Имя"
-            inputValue="Денис"
             inputName="name"
-            inputError=""
             />
           <Input
+            validationRules={{
+              pattern:EmailPattern,
+              required:true,
+            }}
+            customErrorMsg="Некорректный адрес электронной почты"
+            setIsValid={setIsValidEmail}
             inputType="email"
             inputTitle="E-mail"
-            inputValue="example@yandex.ru"
             inputName="email"
-            inputError=""
           />
           <Input
+            validationRules={{
+              required:true,
+            }}
+            customErrorMsg=""
+            setIsValid={setIsValidPassword}
             inputType="password"
             inputTitle="Пароль"
-            inputValue="09u09u0"
             inputName="password"
-            inputError="Что-то пошло не так..."
           />
-          <AuthFormButton buttonTitle="Зарегистрироваться"/>
+          <p className="register__total-error">{totalError}</p>
+          <AuthFormButton buttonTitle="Зарегистрироваться" isDisabled={!isValid} />
         </form>
         <p className="register__is-account">
           Уже зарегистрированы? <Link className="register__is-account register__is-account_text-enter" to="/signin">Войти</Link>

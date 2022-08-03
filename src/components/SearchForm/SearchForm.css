@@ -7,6 +7,7 @@
 }
 
 .search-form__form {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: 1fr;
@@ -56,6 +57,21 @@
 
 .search-form__input:focus {
   outline: 2px solid #3DDC84;
+}
+
+.search-form__error {
+  display: block;
+  position: absolute;
+  top: 37px;
+  left: 63px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #ee3465;
+}
+
+.search-form__error_invisible {
+  display: none;
 }
 
 .search-form__submit {

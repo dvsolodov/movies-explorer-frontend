@@ -1,26 +1,75 @@
 import './MoviesCardList.css';
 import {  useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import img1 from '../../images/card_1.png';
-import img2 from '../../images/card_2.png';
+import { useEffect, useState } from 'react';
+import { WindowWidth1280, WindowWidth320, WindowWidth768 } from '../../utils/constants';
 
-export default function MoviesCardList() {
+export default function MoviesCardList({ movies, error }) {
   const location = useLocation();
+  const currentPath = location.pathname;
+  const [moviesCount, setMoviesCount] = useState(currentPath === "/movies" ? getRow() : movies.length);
+  const [row, setRow] = useState(() => getRow());
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    }
+  }, [])
+
+  function handleClick(e) {
+    e.preventDefault();
+
+    setMoviesCount(moviesCount + row);
+  }
+
+  function handleWindowResize() {
+    setRow(getRow());
+  }
+
+  function getRow() {
+    const windowWidth = document.documentElement.clientWidth;
+    let row = WindowWidth1280;
+
+    if (windowWidth >= 768 && windowWidth < 1280) {
+      row = WindowWidth768;
+    }
+
+    if (windowWidth >= 320 && windowWidth < 768) {
+      row = WindowWidth320;
+    }
+
+    return row;
+  }
+
+  function handleMessage() {
+    if (error) {
+      return `Во время запроса произошла ошибка.
+        Возможно, проблема с соединением или сервер недоступен.
+        Подождите немного и попробуйте ещё раз`;
+    } else if (!error && movies.length === 0) {
+      return "Ничего не найдено";
+    }
+  }
 
   return (
     <section className="movies-card-list">
-      <div className="movies-card-list__wrap">
-        <MoviesCard img={img1} title='card 1' duration='1:25' />
-        <MoviesCard img={img2} title='card 2' duration='1:25' />
-        <MoviesCard img={img1} title='card 1' duration='1:25' />
-        <MoviesCard img={img2} title='card 2' duration='1:25' />
-        <MoviesCard img={img1} title='card 1' duration='1:25' />
-        <MoviesCard img={img1} title='card 1' duration='1:25' />
-        <MoviesCard img={img2} title='card 2' duration='1:25' />
-      </div>
+      { !error && movies.length === 0 &&
+        <p className="movies-card-list__msg">{handleMessage()}</p>
+      }
 
-      { location.pathname === "/movies" &&
-        <button className="movies-card-list__more-btn">Ещё</button>
+      { error &&
+        <p className="movies-card-list__msg">{handleMessage()}</p>
+      }
+
+      <div className="movies-card-list__wrap">
+        { !error && movies.slice(0, moviesCount).map((movie, index) => {
+          return <MoviesCard movie={movie} key={index} />
+        })}
+      </div>
+      { location.pathname === "/movies" && movies.length > row && movies.length >= moviesCount &&
+        <button className="movies-card-list__more-btn" onClick={handleClick}>Ещё</button>
       }
     </section>
   );
