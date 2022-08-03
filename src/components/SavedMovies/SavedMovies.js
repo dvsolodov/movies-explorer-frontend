@@ -5,7 +5,7 @@ import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import { filterSavedMovies } from '../../utils/utils';
+import { filterSearch } from '../../utils/utils';
 import { ls } from '../../utils/LocalStorage';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
@@ -17,7 +17,7 @@ export default function SavedMovies({ onNavPopup }) {
 
   function handleSubmit({searchText, isShorted}) {
     setIsLoaded(false);
-    const filteredData = filterSavedMovies(movies, searchText, isShorted);
+    const filteredData = filterSearch(movies, searchText, isShorted);
     setMovies(filteredData);
     setIsLoaded(true);
   }

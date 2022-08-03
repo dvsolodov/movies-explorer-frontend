@@ -7,42 +7,20 @@ function formatTime(timeInMinutes) {
   return `${hours}ч ${mins}м`;
 }
 
-function filterMovies(movies, savedMovies, searchText, isShorted) {
-  return movies.filter((movie) => {
-    if (isShorted && movie.duration > 40) {
-      return false;
-    }
-
-    if (searchText !== "") {
-      const str = `${movie.nameRU} ${movie.nameEN} ${movie.description}`;
-
-      if (!str.toLowerCase().includes(searchText.toLowerCase())) {
-        return false;
-      }
-    }
-
-    const mapArray = getMap(savedMovies);
-
-    const filteredMovie = mapArray.every((map) => {
+function markSavedMovies(movies, mapArray) {
+  movies.forEach((movie) => {
+    mapArray.forEach((map) => {
       const idsArr = map.split(" ");
+
       if (movie.id.toString() === idsArr[1].toString()) {
         movie.savedMovie = idsArr[0];
-        return false;
       }
-
-      return true;
     });
-
-    if (filteredMovie) {
-      movie.savedMovie = "";
-    }
-
-    return true;
   });
 }
 
-function filterSavedMovies(savedMovies, searchText, isShorted) {
-  return savedMovies.filter((movie) => {
+function filterSearch(movies, searchText, isShorted) {
+  return movies.filter((movie) => {
     if (isShorted && movie.duration > ShortFilmDuration) {
       return false;
     }
@@ -73,6 +51,7 @@ function getMap(savedMovie) {
 
 export {
   formatTime,
-  filterMovies,
-  filterSavedMovies
+  markSavedMovies,
+  filterSearch,
+  getMap,
 };

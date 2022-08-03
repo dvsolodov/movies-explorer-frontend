@@ -8,7 +8,7 @@ import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
 import { useEffect, useState, useContext } from 'react';
 import { ls } from '../../utils/LocalStorage';
-import { filterMovies } from '../../utils/utils';
+import { filterSearch, getMap, markSavedMovies } from '../../utils/utils';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function Movies({ onNavPopup }) {
@@ -17,7 +17,6 @@ export default function Movies({ onNavPopup }) {
   const [isLoaded, setIsLoaded] = useState(true);
   const [formData, setFormData] = useState(ls.getData(currentUser._id + 'formDataMovies'));
   const [movies, setMovies] = useState(getMovies());
-  const [savedMovies, setSavedMovies] = useState(ls.getData(currentUser._id + 'savedMovies'));
 
   function getMovies() {
     const allMovies = ls.getData(currentUser._id + 'movies');
@@ -46,13 +45,13 @@ export default function Movies({ onNavPopup }) {
               ls.setData(currentUser._id + "savedMovies", result);
               const moviesLs = ls.getData(currentUser._id + "movies");
               const savedMoviesLs = ls.getData(currentUser._id + "savedMovies");
-              const filteredData = filterMovies(moviesLs, savedMoviesLs, "", false);
+              const mapArray = getMap(savedMoviesLs);
+              markSavedMovies(moviesLs, mapArray);
 
               ls.removeData(currentUser._id + "movies");
-              ls.setData(currentUser._id + "movies", filteredData);
+              ls.setData(currentUser._id + "movies", moviesLs);
 
-              setMovies(filteredData);
-              setSavedMovies(savedMoviesLs);
+              setMovies(moviesLs);
               setIsLoaded(true);
             })
             .catch((err) => {
@@ -74,8 +73,8 @@ export default function Movies({ onNavPopup }) {
     setIsLoaded(false);
     setFormData({searchText, isShorted});
 
-    const movieLs = ls.getData(currentUser._id + "movies");
-    const filteredData = filterMovies(movieLs, savedMovies, searchText, isShorted);
+    const moviesLs = ls.getData(currentUser._id + "movies");
+    const filteredData = filterSearch(moviesLs, searchText, isShorted);
 
     if (!filteredData) {
       setError(true);
@@ -85,7 +84,8 @@ export default function Movies({ onNavPopup }) {
 
     ls.removeData(currentUser._id + "moviesSearch");
     ls.setData(currentUser._id + "moviesSearch", filteredData);
-    ls.setData(currentUser._id + "formDataMovies", {searchText, isShorted})
+    ls.removeData(currentUser._id + "formDataMovies");
+    ls.setData(currentUser._id + "formDataMovies", {searchText, isShorted});
 
     setMovies(filteredData);
     setIsLoaded(true);

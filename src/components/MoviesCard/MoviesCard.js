@@ -21,6 +21,7 @@ export default function MoviesCard({ movie }) {
   const [btnImg, setBtnImg] = useState();
 
   useEffect(() => {
+    console.log(movie);
     if (locPath === "/movies") {
       if (movie.savedMovie === "") {
         setAlt('Добавить в сохраненные')
@@ -33,7 +34,7 @@ export default function MoviesCard({ movie }) {
       setAlt("Удалить из сохраненных");
       setBtnImg(delImg);
     }
-  }, []);
+  });
 
   function handleClick(e) {
     e.preventDefault()
@@ -58,6 +59,8 @@ export default function MoviesCard({ movie }) {
           if (result.message !== "Фильм удален") {
             throw new Error(result.message);
           }
+
+          movie.savedMovie = "";
 
           const moviesLs = ls.getData(currentUser._id + "movies");
           const moviesSearchLs = ls.getData(currentUser._id + "moviesSearch");
