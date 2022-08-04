@@ -83,3 +83,7 @@ https://solodov-dplm.students.nomoredomains.xyz/
 ## Организация поиска
 
 Поиск организован по русскому и английскому назвванию и описанию фильма.
+
+## PR
+
+https://github.com/dvsolodov/movies-explorer-frontend/pull/2
