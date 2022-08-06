@@ -79,3 +79,11 @@ https://www.figma.com/file/Hykofev18S08clVET0HJMV/Diploma-(Copy)?node-id=891%3A3
 https://solodov-dplm.students.nomoredomains.xyz/
 
 Для лендинга использована технология flex, для остальных - grid
+
+## Организация поиска
+
+Поиск организован по русскому и английскому назвванию и описанию фильма.
+
+## PR
+
+https://github.com/dvsolodov/movies-explorer-frontend/pull/2
